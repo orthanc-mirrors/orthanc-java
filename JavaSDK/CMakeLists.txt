@@ -31,7 +31,7 @@ file(GLOB JAVA_SOURCES
   ${CMAKE_SOURCE_DIR}/be/uclouvain/orthanc/*.java
   )
 
-set(JAVADOC_OUTPUT_DIR "${CMAKE_CURRENT_BINARY_DIR}/Documentation")
+set(JAVADOC_OUTPUT_DIR "${CMAKE_CURRENT_BINARY_DIR}/OrthancJavaSDKDocumentation")
 file(MAKE_DIRECTORY ${JAVADOC_OUTPUT_DIR})
 
 add_jar(OrthancJavaSDK
