@@ -24,6 +24,8 @@ project(OrthancJavaPlugin)
 
 set(PLUGIN_VERSION "mainline")
 
+set(CMAKE_CXX_STANDARD 11)
+
 include(CheckIncludeFileCXX)
 include(FindPythonInterp)
 
