@@ -1,0 +1,175 @@
+/**
+ * SPDX-FileCopyrightText: 2023 Sebastien Jodogne, UCLouvain, Belgium
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
+/**
+ * Java plugin for Orthanc
+ * Copyright (C) 2023 Sebastien Jodogne, UCLouvain, Belgium
+ *
+ * This program is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ **/
+
+
+{{#functions}}
+
+JNIEXPORT {{return.c_type}} JNI_{{c_function}}(JNIEnv* env, jobject sdkObject{{#class_name}}, jlong self{{/class_name}}{{#args}}, {{c_type}} {{name}}{{/args}})
+{
+  try
+  {
+{{#args}}
+{{#convert_string}}
+    JavaString c_{{name}}(env, {{name}});
+{{/convert_string}}
+{{#convert_bytes}}
+    JavaBytes c_{{name}}(env, {{name}});
+{{/convert_bytes}}
+{{/args}}
+  
+{{#return.is_void}}
+    {{c_function}}(context_
+      {{#class_name}}, reinterpret_cast<{{class_name}}*>(static_cast<intptr_t>(self)){{/class_name}}
+      {{#args}}, {{c_accessor}}{{/args}});
+{{/return.is_void}}
+  
+{{#return.is_exception}}
+    OrthancPluginErrorCode code = {{c_function}}(context_
+      {{#class_name}}, reinterpret_cast<{{class_name}}*>(static_cast<intptr_t>(self)){{/class_name}}
+      {{#args}}, {{c_accessor}}{{/args}});
+    if (code != OrthancPluginErrorCode_Success)
+    {
+      JavaEnvironment::ThrowException(env, code);
+    }
+{{/return.is_exception}}
+  
+{{#return.is_number}}
+    return {{c_function}}(context_
+      {{#class_name}}, reinterpret_cast<{{class_name}}*>(static_cast<intptr_t>(self)){{/class_name}}
+      {{#args}}, {{c_accessor}}{{/args}});
+{{/return.is_number}}
+  
+{{#return.is_static_string}}
+    const char* s = {{c_function}}(context_
+      {{#class_name}}, reinterpret_cast<{{class_name}}*>(static_cast<intptr_t>(self)){{/class_name}}
+      {{#args}}, {{c_accessor}}{{/args}});
+    if (s == NULL)
+    {
+      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      return NULL;
+    }
+    else
+    {
+      return env->NewStringUTF(s);
+    }
+{{/return.is_static_string}}
+  
+{{#return.is_dynamic_string}}
+    OrthancString s({{c_function}}(context_
+      {{#class_name}}, reinterpret_cast<{{class_name}}*>(static_cast<intptr_t>(self)){{/class_name}}
+      {{#args}}, {{c_accessor}}{{/args}}));
+    if (s.GetValue() == NULL)
+    {
+      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      return NULL;
+    }
+    else
+    {
+      jstring t = env->NewStringUTF(s.GetValue());
+      if (t == NULL)
+      {
+        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        return NULL;
+      }
+      else
+      {
+        return t;
+      }
+    }
+{{/return.is_dynamic_string}}
+  
+{{#return.is_bytes}}
+    OrthancBytes b;
+    OrthancPluginErrorCode code = {{c_function}}(context_, b.GetMemoryBuffer()
+      {{#class_name}}, reinterpret_cast<{{class_name}}*>(static_cast<intptr_t>(self)){{/class_name}}
+      {{#args}}, {{c_accessor}}{{/args}});
+    if (code == OrthancPluginErrorCode_Success)
+    {
+      jbyteArray answer = env->NewByteArray(b.GetSize());
+      if (answer == NULL)
+      {
+        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        return NULL;
+      }
+      else
+      {
+        env->SetByteArrayRegion(answer, 0, b.GetSize(), reinterpret_cast<const jbyte*>(b.GetData()));
+        return answer;
+      }
+    }
+    else
+    {
+      JavaEnvironment::ThrowException(env, code);
+      return NULL;
+    }
+{{/return.is_bytes}}
+  
+{{#return.is_object}}
+    {{return.class_name}}* answer = {{c_function}}(context_
+      {{#class_name}}, reinterpret_cast<{{class_name}}*>(static_cast<intptr_t>(self)){{/class_name}}
+      {{#args}}, {{c_accessor}}{{/args}});
+    if (answer == NULL)
+    {
+      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      return 0;
+    }
+    else
+    {
+      return reinterpret_cast<intptr_t>(answer);
+    }
+{{/return.is_object}}
+  
+{{#return.is_enumeration}}
+    return {{c_function}}(context_
+      {{#class_name}}, reinterpret_cast<{{class_name}}*>(static_cast<intptr_t>(self)){{/class_name}}
+      {{#args}}, {{c_accessor}}{{/args}});
+{{/return.is_enumeration}}
+  }
+  catch (std::runtime_error& e)
+  {
+    JavaEnvironment::ThrowException(env, e.what());
+    {{#return.default_value}}return {{return.default_value}};{{/return.default_value}}
+  }
+  catch (...)
+  {
+    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    {{#return.default_value}}return {{return.default_value}};{{/return.default_value}}
+  }
+}
+
+{{/functions}}
+
+static void JNI_LoadNatives(std::vector<JNINativeMethod>& methods)
+{
+  methods.clear();
+{{#functions}}
+
+{{#java_signature}}
+  methods.push_back((JNINativeMethod) {
+    const_cast<char*>("{{c_function}}"),
+    const_cast<char*>("{{java_signature}}"),
+    (void*) JNI_{{c_function}}
+  });
+{{/java_signature}}
+{{/functions}}
+}

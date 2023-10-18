@@ -1,0 +1,11 @@
+This is an excerpt of the Eclipse Temurin Latest Releases for:
+
+- Operating system: Windows
+- Architecture: x86
+- Package type: JDK
+- Version: 8 - LTS
+- Package type: ZIP
+
+https://adoptium.net/temurin/releases/
+
+Filename: OpenJDK8U-jdk_x86-32_windows_hotspot_8u382b05.zip

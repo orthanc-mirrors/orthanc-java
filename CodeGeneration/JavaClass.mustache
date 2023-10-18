@@ -1,0 +1,105 @@
+package be.uclouvain.orthanc;
+
+/**
+ * SPDX-FileCopyrightText: 2023 Sebastien Jodogne, UCLouvain, Belgium
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
+/**
+ * Java plugin for Orthanc
+ * Copyright (C) 2023 Sebastien Jodogne, UCLouvain, Belgium
+ *
+ * This program is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses/.
+ **/
+
+
+{{#has_documentation}}
+/**
+ * {{documentation}}
+ **/
+{{/has_documentation}}
+public class {{class_name}} {
+    private long self;
+
+    /**
+     * Construct a Java object wrapping a C object that is managed by Orthanc.
+     * @param self Pointer to the C object.
+     **/
+    protected {{class_name}}(long self) {
+        if (self == 0) {
+            throw new IllegalArgumentException("Null pointer");
+        } else {
+            this.self = self;
+        }
+    }
+
+    /**
+     * Return the C object that is associated with this Java wrapper.
+     * @return Pointer to the C object.
+     **/
+    protected long getSelf() {
+        return self;
+    }
+
+    {{#destructor}}
+    @Override
+    protected void finalize() throws Throwable {
+        dispose();
+        super.finalize();
+    }
+
+    /**
+     * Manually deallocate the C object that is associated with this Java wrapper.
+     *
+     * This method can be used to immediately deallocate the C object,
+     * instead of waiting for the garbage collector to dispose the Java wrapper.
+     **/
+    public void dispose() {
+        if (self != 0) {
+            NativeSDK.{{destructor}}(self);
+            self = 0;
+        }
+    }
+    {{/destructor}}
+
+    {{#constructors}}
+    {{#has_documentation}}
+    /**
+    {{#documentation}}
+     * {{line}}
+    {{/documentation}}
+     **/
+    {{/has_documentation}}
+    public static {{return.java_wrapper_type}} {{java_name}}({{#args}}
+        {{java_wrapper_type}} {{sdk_name}}{{^last}},{{/last}}{{/args}}) {
+        return new {{return.java_wrapper_type}}(NativeSDK.{{c_function}}({{#args}}{{java_wrapper_accessor}}{{^last}}, {{/last}}{{/args}}){{java_return_end}};
+    }
+
+    {{/constructors}}
+
+    {{#methods}}
+    {{#has_documentation}}
+    /**
+    {{#documentation}}
+     * {{line}}
+    {{/documentation}}
+     **/
+    {{/has_documentation}}
+    public {{return.java_wrapper_type}} {{java_name}}({{#args}}
+        {{java_wrapper_type}} {{sdk_name}}{{^last}},{{/last}}{{/args}}) {
+        {{java_return_start}}NativeSDK.{{c_function}}(self{{#has_args}}, {{/has_args}}{{#args}}{{java_wrapper_accessor}}{{^last}}, {{/last}}{{/args}}){{java_return_end}};
+    }
+
+    {{/methods}}
+}

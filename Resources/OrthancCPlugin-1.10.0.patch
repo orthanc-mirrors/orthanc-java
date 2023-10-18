@@ -1,0 +1,155 @@
+--- OrthancCPlugin.h.orig	2023-10-14 17:06:44.406226125 +0200
++++ OrthancCPlugin.h	2023-10-14 17:09:26.978745058 +0200
+@@ -837,7 +837,7 @@
+    **/
+   typedef enum
+   {
+-    OrthancPluginDicomToJsonFlags_None                  = 0,
++    OrthancPluginDicomToJsonFlags_None                  = 0,         /*!< Default formatting */
+     OrthancPluginDicomToJsonFlags_IncludeBinary         = (1 << 0),  /*!< Include the binary tags */
+     OrthancPluginDicomToJsonFlags_IncludePrivateTags    = (1 << 1),  /*!< Include the private tags */
+     OrthancPluginDicomToJsonFlags_IncludeUnknownTags    = (1 << 2),  /*!< Include the tags unknown by the dictionary */
+@@ -858,7 +858,7 @@
+    **/
+   typedef enum
+   {
+-    OrthancPluginCreateDicomFlags_None                  = 0,
++    OrthancPluginCreateDicomFlags_None                  = 0,         /*!< Default mode */
+     OrthancPluginCreateDicomFlags_DecodeDataUriScheme   = (1 << 0),  /*!< Decode fields encoded using data URI scheme */
+     OrthancPluginCreateDicomFlags_GenerateIdentifiers   = (1 << 1),  /*!< Automatically generate DICOM identifiers */
+ 
+@@ -975,32 +975,46 @@
+    **/
+   typedef enum
+   {
++    /**
++     * Success: The DICOM instance is properly stored in the SCP
++     **/
+     OrthancPluginStorageCommitmentFailureReason_Success = 0,
+-    /*!< Success: The DICOM instance is properly stored in the SCP */
+ 
++    /**
++     * 0110H: A general failure in processing the operation was encountered
++     **/
+     OrthancPluginStorageCommitmentFailureReason_ProcessingFailure = 1,
+-    /*!< 0110H: A general failure in processing the operation was encountered */
+ 
++    /**
++     * 0112H: One or more of the elements in the Referenced SOP
++     * Instance Sequence was not available
++     **/
+     OrthancPluginStorageCommitmentFailureReason_NoSuchObjectInstance = 2,
+-    /*!< 0112H: One or more of the elements in the Referenced SOP
+-      Instance Sequence was not available */
+ 
++    /**
++     * 0213H: The SCP does not currently have enough resources to
++     * store the requested SOP Instance(s)
++     **/
+     OrthancPluginStorageCommitmentFailureReason_ResourceLimitation = 3,
+-    /*!< 0213H: The SCP does not currently have enough resources to
+-      store the requested SOP Instance(s) */
+ 
++    /**
++     * 0122H: Storage Commitment has been requested for a SOP Instance
++     * with a SOP Class that is not supported by the SCP
++     **/
+     OrthancPluginStorageCommitmentFailureReason_ReferencedSOPClassNotSupported = 4,
+-    /*!< 0122H: Storage Commitment has been requested for a SOP
+-      Instance with a SOP Class that is not supported by the SCP */
+ 
++    /**
++     * 0119H: The SOP Class of an element in the Referenced SOP
++     * Instance Sequence did not correspond to the SOP class
++     * registered for this SOP Instance at the SCP
++     **/
+     OrthancPluginStorageCommitmentFailureReason_ClassInstanceConflict = 5,
+-    /*!< 0119H: The SOP Class of an element in the Referenced SOP
+-      Instance Sequence did not correspond to the SOP class registered
+-      for this SOP Instance at the SCP */
+ 
++    /**
++     * 0131H: The Transaction UID of the Storage Commitment Request is
++     * already in use
++     **/
+     OrthancPluginStorageCommitmentFailureReason_DuplicateTransactionUID = 6
+-    /*!< 0131H: The Transaction UID of the Storage Commitment Request
+-      is already in use */
+   } OrthancPluginStorageCommitmentFailureReason;
+ 
+ 
+@@ -1829,15 +1843,16 @@
+    * @see OrthancPluginCheckVersion
+    * @ingroup Callbacks
+    **/
+-  ORTHANC_PLUGIN_INLINE int  OrthancPluginCheckVersionAdvanced(
++  ORTHANC_PLUGIN_INLINE int32_t  OrthancPluginCheckVersionAdvanced(
+     OrthancPluginContext* context,
+-    int expectedMajor,
+-    int expectedMinor,
+-    int expectedRevision)
++    int32_t expectedMajor,
++    int32_t expectedMinor,
++    int32_t expectedRevision)
+   {
+-    int major, minor, revision;
++    int32_t major, minor, revision;
+ 
+-    if (sizeof(int32_t) != sizeof(OrthancPluginErrorCode) ||
++    if (sizeof(int) != sizeof(int32_t) || /* Ensure binary compatibility with Orthanc SDK <= 1.12.1 */
++        sizeof(int32_t) != sizeof(OrthancPluginErrorCode) ||
+         sizeof(int32_t) != sizeof(OrthancPluginHttpMethod) ||
+         sizeof(int32_t) != sizeof(_OrthancPluginService) ||
+         sizeof(int32_t) != sizeof(_OrthancPluginProperty) ||
+@@ -1935,7 +1950,7 @@
+    * @see OrthancPluginCheckVersionAdvanced
+    * @ingroup Callbacks
+    **/
+-  ORTHANC_PLUGIN_INLINE int  OrthancPluginCheckVersion(
++  ORTHANC_PLUGIN_INLINE int32_t  OrthancPluginCheckVersion(
+     OrthancPluginContext* context)
+   {
+     return OrthancPluginCheckVersionAdvanced(
+@@ -3077,7 +3092,7 @@
+    * @return 1 if the metadata is present, 0 if it is absent, -1 in case of error.
+    * @ingroup DicomInstance
+    **/
+-  ORTHANC_PLUGIN_INLINE int  OrthancPluginHasInstanceMetadata(
++  ORTHANC_PLUGIN_INLINE int32_t  OrthancPluginHasInstanceMetadata(
+     OrthancPluginContext*              context,
+     const OrthancPluginDicomInstance*  instance,
+     const char*                        metadata)
+@@ -3856,13 +3871,13 @@
+     OrthancPluginContext*    context,
+     OrthancPluginRestOutput* output,
+     uint16_t                 status,
+-    const char*              body,
++    const void*              body,
+     uint32_t                 bodySize)
+   {
+     _OrthancPluginSendHttpStatus params;
+     params.output = output;
+     params.status = status;
+-    params.body = body;
++    params.body = reinterpret_cast<const char*>(body);
+     params.bodySize = bodySize;
+     context->InvokeService(context, _OrthancPluginService_SendHttpStatus, &params);
+   }
+@@ -6760,7 +6775,7 @@
+   {
+     char**             resultId;
+     OrthancPluginJob  *job;
+-    int                priority;
++    int32_t            priority;
+   } _OrthancPluginSubmitJob;
+ 
+   /**
+@@ -6779,7 +6794,7 @@
+   ORTHANC_PLUGIN_INLINE char *OrthancPluginSubmitJob(
+     OrthancPluginContext   *context,
+     OrthancPluginJob       *job,
+-    int                     priority)
++    int32_t                 priority)
+   {
+     char* resultId = NULL;
+ 
