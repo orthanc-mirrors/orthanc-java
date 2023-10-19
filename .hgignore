@@ -5,6 +5,7 @@ syntax: glob
 *~
 Plugin/ThirdPartyDownloads/
 Plugin/i/
+Plugin/r/
 Plugin/w32/
 Plugin/w64/
 Plugin/s/

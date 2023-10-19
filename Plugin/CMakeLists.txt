@@ -108,9 +108,16 @@ add_definitions(
 add_library(OrthancJava SHARED
   ${JSONCPP_SOURCES}
   ${PLUGIN_RESOURCES}
+
+  JavaBytes.cpp
   JavaEnvironment.cpp
+  JavaGlobalReference.cpp
+  JavaLocalObject.cpp
+  JavaString.cpp
   JavaVirtualMachine.cpp
   Mutex.cpp
+  OrthancBytes.cpp
+  OrthancString.cpp
   Plugin.cpp
   )
 

@@ -22,6 +22,12 @@
  **/
 
 
+#include "JavaLocalObject.h"
+#include "JavaGlobalReference.h"
+#include "OrthancBytes.h"
+#include "OrthancString.h"
+#include "JavaBytes.h"
+#include "JavaString.h"
 #include "JavaEnvironment.h"
 #include "JavaVirtualMachine.h"
 
@@ -44,307 +50,6 @@
 OrthancPluginContext* context_ = NULL;
 
 static std::unique_ptr<JavaVirtualMachine> java_;
-
-
-
-class JavaString : public NonCopyable
-{
-private:
-  JNIEnv*      env_;
-  jstring      javaStr_;
-  const char*  cStr_;
-  jboolean     isCopy_;
-  
-public:
-  JavaString(JNIEnv* env,
-             jstring javaStr) :
-    env_(env),
-    javaStr_(javaStr)
-  {
-    if (env == NULL ||
-        javaStr == NULL)
-    {
-      throw std::runtime_error("Null pointer");
-    }
-
-    cStr_ = env_->GetStringUTFChars(javaStr_, &isCopy_);
-    if (cStr_ == NULL)
-    {
-      throw std::runtime_error("Cannot read string");
-    }
-  }
-
-  ~JavaString()
-  {
-    /**
-     * "The ReleaseString-Chars call is necessary whether
-     * GetStringChars has set isCopy to JNI_TRUE or JNI_FALSE."
-     * https://stackoverflow.com/a/5863081
-     **/
-    env_->ReleaseStringUTFChars(javaStr_, cStr_);
-  }
-
-  const char* GetValue() const
-  {
-    return cStr_;
-  }
-};
-
-
-class JavaBytes : public NonCopyable
-{
-private:
-  JNIEnv*      env_;
-  jbyteArray   bytes_;
-  jbyte*       data_;
-  jsize        size_;
-  jboolean     isCopy_;
-  
-public:
-  JavaBytes(JNIEnv* env,
-            jbyteArray bytes) :
-    env_(env),
-    bytes_(bytes)
-  {
-    if (env == NULL ||
-        bytes == NULL)
-    {
-      throw std::runtime_error("Null pointer");
-    }
-
-    size_ = env->GetArrayLength(bytes);
-
-    if (size_ == 0)
-    {
-      data_ = NULL;
-    }
-    else
-    {
-      data_ = env->GetByteArrayElements(bytes_, &isCopy_);
-      if (data_ == NULL)
-      {
-        throw std::runtime_error("Cannot read array of bytes");
-      }
-    }
-  }
-
-  ~JavaBytes()
-  {
-    if (size_ > 0)
-    {
-      env_->ReleaseByteArrayElements(bytes_, data_, 0);
-    }
-  }
-
-  const void* GetData() const
-  {
-    return data_;
-  }
-
-  size_t GetSize() const
-  {
-    return size_;
-  }
-};
-
-
-class OrthancString : public NonCopyable
-{
-private:
-  char*  str_;
-
-public:
-  OrthancString(char* str) :
-    str_(str)
-  {
-  }
-
-  ~OrthancString()
-  {
-    if (str_ != NULL)
-    {
-      OrthancPluginFreeString(context_, str_);
-    }
-  }
-
-  const char* GetValue() const
-  {
-    return str_;
-  }
-};
-
-
-class OrthancBytes : public NonCopyable
-{
-private:
-  OrthancPluginMemoryBuffer  buffer_;
-
-public:
-  OrthancBytes()
-  {
-    buffer_.data = NULL;
-    buffer_.size = 0;
-  }
-
-  ~OrthancBytes()
-  {
-    OrthancPluginFreeMemoryBuffer(context_, &buffer_);
-  }
-
-  OrthancPluginMemoryBuffer* GetMemoryBuffer()
-  {
-    return &buffer_;
-  }
-
-  const void* GetData() const
-  {
-    return buffer_.data;
-  }
-
-  size_t GetSize() const
-  {
-    return buffer_.size;
-  }
-};
-
-
-class JavaGlobalReference : public NonCopyable
-{
-private:
-  JavaVirtualMachine&  jvm_;
-  jobject obj_;
-
-public:
-  JavaGlobalReference(JavaVirtualMachine& jvm,
-                      jobject obj) :
-    jvm_(jvm),
-    obj_(NULL)
-  {
-    if (obj == NULL)
-    {
-      throw std::runtime_error("Null pointer");
-    }
-
-    JavaEnvironment env(jvm);
-
-    obj_ = env.GetValue().NewGlobalRef(obj);
-    if (obj_ == NULL)
-    {
-      throw std::runtime_error("Cannot create global reference");
-    }
-  }
-
-  ~JavaGlobalReference()
-  {
-    assert(obj_ != NULL);
-
-    try
-    {
-      JavaEnvironment env(jvm_);
-      env.GetValue().DeleteGlobalRef(obj_);
-    }
-    catch (std::runtime_error& e)
-    {
-      OrthancPluginLogError(context_, e.what());
-    }
-  }
-
-  jobject GetValue()
-  {
-    assert(obj_ != NULL);
-    return obj_;
-  }
-};
-
-
-class LocalJavaObject : public NonCopyable
-{
-private:
-  JNIEnv*  env_;
-  jobject  obj_;
-
-public:
-  LocalJavaObject(JavaEnvironment& env,
-                  jobject obj,
-                  bool objCanBeNull = false) :
-    env_(&env.GetValue()),
-    obj_(obj)
-  {
-    if (!objCanBeNull && obj == NULL)
-    {
-      throw std::runtime_error("Null pointer");
-    }
-  }
-
-  ~LocalJavaObject()
-  {
-    env_->DeleteLocalRef(obj_);
-  }
-
-  jobject GetValue()
-  {
-    return obj_;
-  }
-
-  static LocalJavaObject* CreateArrayOfStrings(JavaEnvironment& env,
-                                               const std::vector<std::string>& items)
-  {
-    LocalJavaObject emptyString(env, env.GetValue().NewStringUTF(""));
-
-    jobjectArray obj = env.GetValue().NewObjectArray(
-      items.size(), env.GetValue().FindClass("java/lang/String"),
-      emptyString.GetValue());
-
-    if (obj == NULL)
-    {
-      throw std::runtime_error("Cannot create an array of Java strings");
-    }
-    else
-    {
-      std::unique_ptr<LocalJavaObject> result(new LocalJavaObject(env, obj));
-
-      for (size_t i = 0; i < items.size(); i++)
-      {
-        LocalJavaObject item(env, env.GetValue().NewStringUTF(items[i].c_str()));
-        env.GetValue().SetObjectArrayElement(obj, i, item.GetValue());
-      }
-
-      return result.release();
-    }
-  }
-
-  static LocalJavaObject* CreateDictionary(JavaEnvironment& env,
-                                           const std::map<std::string, std::string>& items)
-  {
-    // NB: In JNI, there are no generics. All the templated arguments
-    // are taken as instances of the "Object" base class.
-
-    jclass cls = env.FindClass("java/util/HashMap");
-    jmethodID constructor = env.GetMethodID(cls, "<init>", "()V");
-    jmethodID setter = env.GetMethodID(cls, "put", "(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;");
-    jobject obj = env.GetValue().NewObject(cls, constructor);
-
-    if (obj == NULL)
-    {
-      throw std::runtime_error("Cannot create a Java dictionary");
-    }
-    else
-    {
-      std::unique_ptr<LocalJavaObject> result(new LocalJavaObject(env, obj));
-
-      for (std::map<std::string, std::string>::const_iterator it = items.begin(); it != items.end(); ++it)
-      {
-        LocalJavaObject key(env, env.GetValue().NewStringUTF(it->first.c_str()));
-        LocalJavaObject value(env, env.GetValue().NewStringUTF(it->second.c_str()));
-        LocalJavaObject previousValue(env, env.GetValue().CallObjectMethod(obj, setter, key.GetValue(), value.GetValue()), true);
-        env.CheckException();
-      }
-
-      return result.release();
-    }
-  }
-};
-
 
 
 #include "NativeSDK.cpp"
@@ -516,13 +221,13 @@ private:
 
       JavaEnvironment env(*java_);
 
-      LocalJavaObject joutput(env, env.ConstructJavaWrapper("be/uclouvain/orthanc/RestOutput", output));
-      LocalJavaObject jmethod(env, env.ConstructEnumValue("be/uclouvain/orthanc/HttpMethod", request->method));
-      LocalJavaObject juri(env, env.GetValue().NewStringUTF(uri == NULL ? "" : uri));
-      std::unique_ptr<LocalJavaObject> jgroups(LocalJavaObject::CreateArrayOfStrings(env, groups));
-      std::unique_ptr<LocalJavaObject> jheaders(LocalJavaObject::CreateDictionary(env, headers));
-      std::unique_ptr<LocalJavaObject> jgetParameters(LocalJavaObject::CreateDictionary(env, getParameters));
-      LocalJavaObject jbody(env, env.ConstructByteArray(request->bodySize, request->body));
+      JavaLocalObject joutput(env, env.ConstructJavaWrapper("be/uclouvain/orthanc/RestOutput", output));
+      JavaLocalObject jmethod(env, env.ConstructEnumValue("be/uclouvain/orthanc/HttpMethod", request->method));
+      JavaLocalObject juri(env, env.GetValue().NewStringUTF(uri == NULL ? "" : uri));
+      std::unique_ptr<JavaLocalObject> jgroups(JavaLocalObject::CreateArrayOfStrings(env, groups));
+      std::unique_ptr<JavaLocalObject> jheaders(JavaLocalObject::CreateDictionary(env, headers));
+      std::unique_ptr<JavaLocalObject> jgetParameters(JavaLocalObject::CreateDictionary(env, getParameters));
+      JavaLocalObject jbody(env, env.ConstructByteArray(request->bodySize, request->body));
 
       jmethodID call = env.GetMethodID(
         env.GetObjectClass(callback), "call",
@@ -589,9 +294,9 @@ OrthancPluginErrorCode OnChangeCallback(OrthancPluginChangeType changeType,
     {
       JavaEnvironment env(*java_);
 
-      LocalJavaObject c(env, env.ConstructEnumValue("be/uclouvain/orthanc/ChangeType", changeType));
-      LocalJavaObject r(env, env.ConstructEnumValue("be/uclouvain/orthanc/ResourceType", resourceType));
-      LocalJavaObject s(env, env.GetValue().NewStringUTF(resourceId == NULL ? "" : resourceId));
+      JavaLocalObject c(env, env.ConstructEnumValue("be/uclouvain/orthanc/ChangeType", changeType));
+      JavaLocalObject r(env, env.ConstructEnumValue("be/uclouvain/orthanc/ResourceType", resourceType));
+      JavaLocalObject s(env, env.GetValue().NewStringUTF(resourceId == NULL ? "" : resourceId));
 
       for (std::list<jobject>::const_iterator
              callback = callbacks.begin(); callback != callbacks.end(); ++callback)
