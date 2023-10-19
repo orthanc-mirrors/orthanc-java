@@ -49,7 +49,7 @@ JNIEXPORT {{return.c_type}} JNI_{{c_function}}(JNIEnv* env, jobject sdkObject{{#
       {{#args}}, {{c_accessor}}{{/args}});
     if (code != OrthancPluginErrorCode_Success)
     {
-      JavaEnvironment::ThrowException(env, code);
+      JavaEnvironment::ThrowOrthancException(env, code);
     }
 {{/return.is_exception}}
   
@@ -65,7 +65,7 @@ JNIEXPORT {{return.c_type}} JNI_{{c_function}}(JNIEnv* env, jobject sdkObject{{#
       {{#args}}, {{c_accessor}}{{/args}});
     if (s == NULL)
     {
-      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
       return NULL;
     }
     else
@@ -80,7 +80,7 @@ JNIEXPORT {{return.c_type}} JNI_{{c_function}}(JNIEnv* env, jobject sdkObject{{#
       {{#args}}, {{c_accessor}}{{/args}}));
     if (s.GetValue() == NULL)
     {
-      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
       return NULL;
     }
     else
@@ -88,7 +88,7 @@ JNIEXPORT {{return.c_type}} JNI_{{c_function}}(JNIEnv* env, jobject sdkObject{{#
       jstring t = env->NewStringUTF(s.GetValue());
       if (t == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -108,7 +108,7 @@ JNIEXPORT {{return.c_type}} JNI_{{c_function}}(JNIEnv* env, jobject sdkObject{{#
       jbyteArray answer = env->NewByteArray(b.GetSize());
       if (answer == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -119,7 +119,7 @@ JNIEXPORT {{return.c_type}} JNI_{{c_function}}(JNIEnv* env, jobject sdkObject{{#
     }
     else
     {
-      JavaEnvironment::ThrowException(env, code);
+      JavaEnvironment::ThrowOrthancException(env, code);
       return NULL;
     }
 {{/return.is_bytes}}
@@ -130,7 +130,7 @@ JNIEXPORT {{return.c_type}} JNI_{{c_function}}(JNIEnv* env, jobject sdkObject{{#
       {{#args}}, {{c_accessor}}{{/args}});
     if (answer == NULL)
     {
-      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
       return 0;
     }
     else
@@ -147,12 +147,12 @@ JNIEXPORT {{return.c_type}} JNI_{{c_function}}(JNIEnv* env, jobject sdkObject{{#
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     {{#return.default_value}}return {{return.default_value}};{{/return.default_value}}
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     {{#return.default_value}}return {{return.default_value}};{{/return.default_value}}
   }
 }

@@ -106,10 +106,12 @@ add_definitions(
   )
 
 add_library(OrthancJava SHARED
-  Plugin.cpp
-  Mutex.cpp
   ${JSONCPP_SOURCES}
   ${PLUGIN_RESOURCES}
+  JavaEnvironment.cpp
+  JavaVirtualMachine.cpp
+  Mutex.cpp
+  Plugin.cpp
   )
 
 set_target_properties(

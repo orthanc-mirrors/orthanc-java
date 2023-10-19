@@ -32,12 +32,12 @@ JNIEXPORT jint JNI_OrthancPluginCheckVersionAdvanced(JNIEnv* env, jobject sdkObj
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return 0;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return 0;
   }
 }
@@ -52,12 +52,12 @@ JNIEXPORT jint JNI_OrthancPluginCheckVersion(JNIEnv* env, jobject sdkObject)
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return 0;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return 0;
   }
 }
@@ -73,11 +73,11 @@ JNIEXPORT void JNI_OrthancPluginLogError(JNIEnv* env, jobject sdkObject, jstring
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
   }
 }
 
@@ -92,11 +92,11 @@ JNIEXPORT void JNI_OrthancPluginLogWarning(JNIEnv* env, jobject sdkObject, jstri
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
   }
 }
 
@@ -111,11 +111,11 @@ JNIEXPORT void JNI_OrthancPluginLogInfo(JNIEnv* env, jobject sdkObject, jstring 
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
   }
 }
 
@@ -133,7 +133,7 @@ JNIEXPORT jbyteArray JNI_OrthancPluginGetDicomForInstance(JNIEnv* env, jobject s
       jbyteArray answer = env->NewByteArray(b.GetSize());
       if (answer == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -144,18 +144,18 @@ JNIEXPORT jbyteArray JNI_OrthancPluginGetDicomForInstance(JNIEnv* env, jobject s
     }
     else
     {
-      JavaEnvironment::ThrowException(env, code);
+      JavaEnvironment::ThrowOrthancException(env, code);
       return NULL;
     }
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -174,7 +174,7 @@ JNIEXPORT jbyteArray JNI_OrthancPluginRestApiGet(JNIEnv* env, jobject sdkObject,
       jbyteArray answer = env->NewByteArray(b.GetSize());
       if (answer == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -185,18 +185,18 @@ JNIEXPORT jbyteArray JNI_OrthancPluginRestApiGet(JNIEnv* env, jobject sdkObject,
     }
     else
     {
-      JavaEnvironment::ThrowException(env, code);
+      JavaEnvironment::ThrowOrthancException(env, code);
       return NULL;
     }
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -215,7 +215,7 @@ JNIEXPORT jbyteArray JNI_OrthancPluginRestApiGetAfterPlugins(JNIEnv* env, jobjec
       jbyteArray answer = env->NewByteArray(b.GetSize());
       if (answer == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -226,18 +226,18 @@ JNIEXPORT jbyteArray JNI_OrthancPluginRestApiGetAfterPlugins(JNIEnv* env, jobjec
     }
     else
     {
-      JavaEnvironment::ThrowException(env, code);
+      JavaEnvironment::ThrowOrthancException(env, code);
       return NULL;
     }
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -257,7 +257,7 @@ JNIEXPORT jbyteArray JNI_OrthancPluginRestApiPost(JNIEnv* env, jobject sdkObject
       jbyteArray answer = env->NewByteArray(b.GetSize());
       if (answer == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -268,18 +268,18 @@ JNIEXPORT jbyteArray JNI_OrthancPluginRestApiPost(JNIEnv* env, jobject sdkObject
     }
     else
     {
-      JavaEnvironment::ThrowException(env, code);
+      JavaEnvironment::ThrowOrthancException(env, code);
       return NULL;
     }
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -299,7 +299,7 @@ JNIEXPORT jbyteArray JNI_OrthancPluginRestApiPostAfterPlugins(JNIEnv* env, jobje
       jbyteArray answer = env->NewByteArray(b.GetSize());
       if (answer == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -310,18 +310,18 @@ JNIEXPORT jbyteArray JNI_OrthancPluginRestApiPostAfterPlugins(JNIEnv* env, jobje
     }
     else
     {
-      JavaEnvironment::ThrowException(env, code);
+      JavaEnvironment::ThrowOrthancException(env, code);
       return NULL;
     }
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -336,16 +336,16 @@ JNIEXPORT void JNI_OrthancPluginRestApiDelete(JNIEnv* env, jobject sdkObject, js
       , c_arg0.GetValue());
     if (code != OrthancPluginErrorCode_Success)
     {
-      JavaEnvironment::ThrowException(env, code);
+      JavaEnvironment::ThrowOrthancException(env, code);
     }
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
   }
 }
 
@@ -359,16 +359,16 @@ JNIEXPORT void JNI_OrthancPluginRestApiDeleteAfterPlugins(JNIEnv* env, jobject s
       , c_arg0.GetValue());
     if (code != OrthancPluginErrorCode_Success)
     {
-      JavaEnvironment::ThrowException(env, code);
+      JavaEnvironment::ThrowOrthancException(env, code);
     }
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
   }
 }
 
@@ -387,7 +387,7 @@ JNIEXPORT jbyteArray JNI_OrthancPluginRestApiPut(JNIEnv* env, jobject sdkObject,
       jbyteArray answer = env->NewByteArray(b.GetSize());
       if (answer == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -398,18 +398,18 @@ JNIEXPORT jbyteArray JNI_OrthancPluginRestApiPut(JNIEnv* env, jobject sdkObject,
     }
     else
     {
-      JavaEnvironment::ThrowException(env, code);
+      JavaEnvironment::ThrowOrthancException(env, code);
       return NULL;
     }
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -429,7 +429,7 @@ JNIEXPORT jbyteArray JNI_OrthancPluginRestApiPutAfterPlugins(JNIEnv* env, jobjec
       jbyteArray answer = env->NewByteArray(b.GetSize());
       if (answer == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -440,18 +440,18 @@ JNIEXPORT jbyteArray JNI_OrthancPluginRestApiPutAfterPlugins(JNIEnv* env, jobjec
     }
     else
     {
-      JavaEnvironment::ThrowException(env, code);
+      JavaEnvironment::ThrowOrthancException(env, code);
       return NULL;
     }
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -466,7 +466,7 @@ JNIEXPORT jstring JNI_OrthancPluginLookupPatient(JNIEnv* env, jobject sdkObject,
       , c_arg0.GetValue()));
     if (s.GetValue() == NULL)
     {
-      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
       return NULL;
     }
     else
@@ -474,7 +474,7 @@ JNIEXPORT jstring JNI_OrthancPluginLookupPatient(JNIEnv* env, jobject sdkObject,
       jstring t = env->NewStringUTF(s.GetValue());
       if (t == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -485,12 +485,12 @@ JNIEXPORT jstring JNI_OrthancPluginLookupPatient(JNIEnv* env, jobject sdkObject,
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -505,7 +505,7 @@ JNIEXPORT jstring JNI_OrthancPluginLookupStudy(JNIEnv* env, jobject sdkObject, j
       , c_arg0.GetValue()));
     if (s.GetValue() == NULL)
     {
-      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
       return NULL;
     }
     else
@@ -513,7 +513,7 @@ JNIEXPORT jstring JNI_OrthancPluginLookupStudy(JNIEnv* env, jobject sdkObject, j
       jstring t = env->NewStringUTF(s.GetValue());
       if (t == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -524,12 +524,12 @@ JNIEXPORT jstring JNI_OrthancPluginLookupStudy(JNIEnv* env, jobject sdkObject, j
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -544,7 +544,7 @@ JNIEXPORT jstring JNI_OrthancPluginLookupStudyWithAccessionNumber(JNIEnv* env, j
       , c_arg0.GetValue()));
     if (s.GetValue() == NULL)
     {
-      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
       return NULL;
     }
     else
@@ -552,7 +552,7 @@ JNIEXPORT jstring JNI_OrthancPluginLookupStudyWithAccessionNumber(JNIEnv* env, j
       jstring t = env->NewStringUTF(s.GetValue());
       if (t == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -563,12 +563,12 @@ JNIEXPORT jstring JNI_OrthancPluginLookupStudyWithAccessionNumber(JNIEnv* env, j
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -583,7 +583,7 @@ JNIEXPORT jstring JNI_OrthancPluginLookupSeries(JNIEnv* env, jobject sdkObject, 
       , c_arg0.GetValue()));
     if (s.GetValue() == NULL)
     {
-      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
       return NULL;
     }
     else
@@ -591,7 +591,7 @@ JNIEXPORT jstring JNI_OrthancPluginLookupSeries(JNIEnv* env, jobject sdkObject, 
       jstring t = env->NewStringUTF(s.GetValue());
       if (t == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -602,12 +602,12 @@ JNIEXPORT jstring JNI_OrthancPluginLookupSeries(JNIEnv* env, jobject sdkObject, 
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -622,7 +622,7 @@ JNIEXPORT jstring JNI_OrthancPluginLookupInstance(JNIEnv* env, jobject sdkObject
       , c_arg0.GetValue()));
     if (s.GetValue() == NULL)
     {
-      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
       return NULL;
     }
     else
@@ -630,7 +630,7 @@ JNIEXPORT jstring JNI_OrthancPluginLookupInstance(JNIEnv* env, jobject sdkObject
       jstring t = env->NewStringUTF(s.GetValue());
       if (t == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -641,12 +641,12 @@ JNIEXPORT jstring JNI_OrthancPluginLookupInstance(JNIEnv* env, jobject sdkObject
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -660,7 +660,7 @@ JNIEXPORT jstring JNI_OrthancPluginGetOrthancPath(JNIEnv* env, jobject sdkObject
       ));
     if (s.GetValue() == NULL)
     {
-      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
       return NULL;
     }
     else
@@ -668,7 +668,7 @@ JNIEXPORT jstring JNI_OrthancPluginGetOrthancPath(JNIEnv* env, jobject sdkObject
       jstring t = env->NewStringUTF(s.GetValue());
       if (t == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -679,12 +679,12 @@ JNIEXPORT jstring JNI_OrthancPluginGetOrthancPath(JNIEnv* env, jobject sdkObject
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -698,7 +698,7 @@ JNIEXPORT jstring JNI_OrthancPluginGetOrthancDirectory(JNIEnv* env, jobject sdkO
       ));
     if (s.GetValue() == NULL)
     {
-      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
       return NULL;
     }
     else
@@ -706,7 +706,7 @@ JNIEXPORT jstring JNI_OrthancPluginGetOrthancDirectory(JNIEnv* env, jobject sdkO
       jstring t = env->NewStringUTF(s.GetValue());
       if (t == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -717,12 +717,12 @@ JNIEXPORT jstring JNI_OrthancPluginGetOrthancDirectory(JNIEnv* env, jobject sdkO
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -736,7 +736,7 @@ JNIEXPORT jstring JNI_OrthancPluginGetConfigurationPath(JNIEnv* env, jobject sdk
       ));
     if (s.GetValue() == NULL)
     {
-      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
       return NULL;
     }
     else
@@ -744,7 +744,7 @@ JNIEXPORT jstring JNI_OrthancPluginGetConfigurationPath(JNIEnv* env, jobject sdk
       jstring t = env->NewStringUTF(s.GetValue());
       if (t == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -755,12 +755,12 @@ JNIEXPORT jstring JNI_OrthancPluginGetConfigurationPath(JNIEnv* env, jobject sdk
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -776,11 +776,11 @@ JNIEXPORT void JNI_OrthancPluginSetRootUri(JNIEnv* env, jobject sdkObject, jstri
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
   }
 }
 
@@ -795,11 +795,11 @@ JNIEXPORT void JNI_OrthancPluginSetDescription(JNIEnv* env, jobject sdkObject, j
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
   }
 }
 
@@ -814,11 +814,11 @@ JNIEXPORT void JNI_OrthancPluginExtendOrthancExplorer(JNIEnv* env, jobject sdkOb
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
   }
 }
 
@@ -832,7 +832,7 @@ JNIEXPORT jstring JNI_OrthancPluginGetGlobalProperty(JNIEnv* env, jobject sdkObj
       , arg0, c_arg1.GetValue()));
     if (s.GetValue() == NULL)
     {
-      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
       return NULL;
     }
     else
@@ -840,7 +840,7 @@ JNIEXPORT jstring JNI_OrthancPluginGetGlobalProperty(JNIEnv* env, jobject sdkObj
       jstring t = env->NewStringUTF(s.GetValue());
       if (t == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -851,12 +851,12 @@ JNIEXPORT jstring JNI_OrthancPluginGetGlobalProperty(JNIEnv* env, jobject sdkObj
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -871,16 +871,16 @@ JNIEXPORT void JNI_OrthancPluginSetGlobalProperty(JNIEnv* env, jobject sdkObject
       , arg0, c_arg1.GetValue());
     if (code != OrthancPluginErrorCode_Success)
     {
-      JavaEnvironment::ThrowException(env, code);
+      JavaEnvironment::ThrowOrthancException(env, code);
     }
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
   }
 }
 
@@ -894,12 +894,12 @@ JNIEXPORT jint JNI_OrthancPluginGetCommandLineArgumentsCount(JNIEnv* env, jobjec
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return 0;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return 0;
   }
 }
@@ -913,7 +913,7 @@ JNIEXPORT jstring JNI_OrthancPluginGetCommandLineArgument(JNIEnv* env, jobject s
       , arg0));
     if (s.GetValue() == NULL)
     {
-      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
       return NULL;
     }
     else
@@ -921,7 +921,7 @@ JNIEXPORT jstring JNI_OrthancPluginGetCommandLineArgument(JNIEnv* env, jobject s
       jstring t = env->NewStringUTF(s.GetValue());
       if (t == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -932,12 +932,12 @@ JNIEXPORT jstring JNI_OrthancPluginGetCommandLineArgument(JNIEnv* env, jobject s
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -952,12 +952,12 @@ JNIEXPORT jint JNI_OrthancPluginGetExpectedDatabaseVersion(JNIEnv* env, jobject 
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return 0;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return 0;
   }
 }
@@ -971,7 +971,7 @@ JNIEXPORT jstring JNI_OrthancPluginGetConfiguration(JNIEnv* env, jobject sdkObje
       ));
     if (s.GetValue() == NULL)
     {
-      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
       return NULL;
     }
     else
@@ -979,7 +979,7 @@ JNIEXPORT jstring JNI_OrthancPluginGetConfiguration(JNIEnv* env, jobject sdkObje
       jstring t = env->NewStringUTF(s.GetValue());
       if (t == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -990,12 +990,12 @@ JNIEXPORT jstring JNI_OrthancPluginGetConfiguration(JNIEnv* env, jobject sdkObje
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -1014,7 +1014,7 @@ JNIEXPORT jbyteArray JNI_OrthancPluginBufferCompression(JNIEnv* env, jobject sdk
       jbyteArray answer = env->NewByteArray(b.GetSize());
       if (answer == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -1025,18 +1025,18 @@ JNIEXPORT jbyteArray JNI_OrthancPluginBufferCompression(JNIEnv* env, jobject sdk
     }
     else
     {
-      JavaEnvironment::ThrowException(env, code);
+      JavaEnvironment::ThrowOrthancException(env, code);
       return NULL;
     }
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -1055,7 +1055,7 @@ JNIEXPORT jbyteArray JNI_OrthancPluginReadFile(JNIEnv* env, jobject sdkObject, j
       jbyteArray answer = env->NewByteArray(b.GetSize());
       if (answer == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -1066,18 +1066,18 @@ JNIEXPORT jbyteArray JNI_OrthancPluginReadFile(JNIEnv* env, jobject sdkObject, j
     }
     else
     {
-      JavaEnvironment::ThrowException(env, code);
+      JavaEnvironment::ThrowOrthancException(env, code);
       return NULL;
     }
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -1093,16 +1093,16 @@ JNIEXPORT void JNI_OrthancPluginWriteFile(JNIEnv* env, jobject sdkObject, jstrin
       , c_arg0.GetValue(), c_arg1.GetData(), c_arg1.GetSize());
     if (code != OrthancPluginErrorCode_Success)
     {
-      JavaEnvironment::ThrowException(env, code);
+      JavaEnvironment::ThrowOrthancException(env, code);
     }
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
   }
 }
 
@@ -1115,7 +1115,7 @@ JNIEXPORT jstring JNI_OrthancPluginGetErrorDescription(JNIEnv* env, jobject sdkO
       , static_cast<OrthancPluginErrorCode>(arg0));
     if (s == NULL)
     {
-      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
       return NULL;
     }
     else
@@ -1125,12 +1125,12 @@ JNIEXPORT jstring JNI_OrthancPluginGetErrorDescription(JNIEnv* env, jobject sdkO
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -1145,7 +1145,7 @@ JNIEXPORT jlong JNI_OrthancPluginUncompressImage(JNIEnv* env, jobject sdkObject,
       , c_arg0.GetData(), c_arg0.GetSize(), static_cast<OrthancPluginImageFormat>(arg2));
     if (answer == NULL)
     {
-      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
       return 0;
     }
     else
@@ -1155,12 +1155,12 @@ JNIEXPORT jlong JNI_OrthancPluginUncompressImage(JNIEnv* env, jobject sdkObject,
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return 0;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return 0;
   }
 }
@@ -1179,7 +1179,7 @@ JNIEXPORT jbyteArray JNI_OrthancPluginCompressPngImage(JNIEnv* env, jobject sdkO
       jbyteArray answer = env->NewByteArray(b.GetSize());
       if (answer == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -1190,18 +1190,18 @@ JNIEXPORT jbyteArray JNI_OrthancPluginCompressPngImage(JNIEnv* env, jobject sdkO
     }
     else
     {
-      JavaEnvironment::ThrowException(env, code);
+      JavaEnvironment::ThrowOrthancException(env, code);
       return NULL;
     }
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -1220,7 +1220,7 @@ JNIEXPORT jbyteArray JNI_OrthancPluginCompressJpegImage(JNIEnv* env, jobject sdk
       jbyteArray answer = env->NewByteArray(b.GetSize());
       if (answer == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -1231,18 +1231,18 @@ JNIEXPORT jbyteArray JNI_OrthancPluginCompressJpegImage(JNIEnv* env, jobject sdk
     }
     else
     {
-      JavaEnvironment::ThrowException(env, code);
+      JavaEnvironment::ThrowOrthancException(env, code);
       return NULL;
     }
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -1263,7 +1263,7 @@ JNIEXPORT jbyteArray JNI_OrthancPluginHttpGet(JNIEnv* env, jobject sdkObject, js
       jbyteArray answer = env->NewByteArray(b.GetSize());
       if (answer == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -1274,18 +1274,18 @@ JNIEXPORT jbyteArray JNI_OrthancPluginHttpGet(JNIEnv* env, jobject sdkObject, js
     }
     else
     {
-      JavaEnvironment::ThrowException(env, code);
+      JavaEnvironment::ThrowOrthancException(env, code);
       return NULL;
     }
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -1307,7 +1307,7 @@ JNIEXPORT jbyteArray JNI_OrthancPluginHttpPost(JNIEnv* env, jobject sdkObject, j
       jbyteArray answer = env->NewByteArray(b.GetSize());
       if (answer == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -1318,18 +1318,18 @@ JNIEXPORT jbyteArray JNI_OrthancPluginHttpPost(JNIEnv* env, jobject sdkObject, j
     }
     else
     {
-      JavaEnvironment::ThrowException(env, code);
+      JavaEnvironment::ThrowOrthancException(env, code);
       return NULL;
     }
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -1351,7 +1351,7 @@ JNIEXPORT jbyteArray JNI_OrthancPluginHttpPut(JNIEnv* env, jobject sdkObject, js
       jbyteArray answer = env->NewByteArray(b.GetSize());
       if (answer == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -1362,18 +1362,18 @@ JNIEXPORT jbyteArray JNI_OrthancPluginHttpPut(JNIEnv* env, jobject sdkObject, js
     }
     else
     {
-      JavaEnvironment::ThrowException(env, code);
+      JavaEnvironment::ThrowOrthancException(env, code);
       return NULL;
     }
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -1390,16 +1390,16 @@ JNIEXPORT void JNI_OrthancPluginHttpDelete(JNIEnv* env, jobject sdkObject, jstri
       , c_arg0.GetValue(), c_arg1.GetValue(), c_arg2.GetValue());
     if (code != OrthancPluginErrorCode_Success)
     {
-      JavaEnvironment::ThrowException(env, code);
+      JavaEnvironment::ThrowOrthancException(env, code);
     }
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
   }
 }
 
@@ -1413,12 +1413,12 @@ JNIEXPORT jint JNI_OrthancPluginGetFontsCount(JNIEnv* env, jobject sdkObject)
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return 0;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return 0;
   }
 }
@@ -1432,7 +1432,7 @@ JNIEXPORT jstring JNI_OrthancPluginGetFontName(JNIEnv* env, jobject sdkObject, j
       , arg0);
     if (s == NULL)
     {
-      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
       return NULL;
     }
     else
@@ -1442,12 +1442,12 @@ JNIEXPORT jstring JNI_OrthancPluginGetFontName(JNIEnv* env, jobject sdkObject, j
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -1462,12 +1462,12 @@ JNIEXPORT jint JNI_OrthancPluginGetFontSize(JNIEnv* env, jobject sdkObject, jint
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return 0;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return 0;
   }
 }
@@ -1482,16 +1482,16 @@ JNIEXPORT void JNI_OrthancPluginRegisterErrorCode(JNIEnv* env, jobject sdkObject
       , arg0, arg1, c_arg2.GetValue());
     if (code != OrthancPluginErrorCode_Success)
     {
-      JavaEnvironment::ThrowException(env, code);
+      JavaEnvironment::ThrowOrthancException(env, code);
     }
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
   }
 }
 
@@ -1505,16 +1505,16 @@ JNIEXPORT void JNI_OrthancPluginRegisterDictionaryTag(JNIEnv* env, jobject sdkOb
       , arg0, arg1, static_cast<OrthancPluginValueRepresentation>(arg2), c_arg3.GetValue(), arg4, arg5);
     if (code != OrthancPluginErrorCode_Success)
     {
-      JavaEnvironment::ThrowException(env, code);
+      JavaEnvironment::ThrowOrthancException(env, code);
     }
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
   }
 }
 
@@ -1529,16 +1529,16 @@ JNIEXPORT void JNI_OrthancPluginRegisterPrivateDictionaryTag(JNIEnv* env, jobjec
       , arg0, arg1, static_cast<OrthancPluginValueRepresentation>(arg2), c_arg3.GetValue(), arg4, arg5, c_arg6.GetValue());
     if (code != OrthancPluginErrorCode_Success)
     {
-      JavaEnvironment::ThrowException(env, code);
+      JavaEnvironment::ThrowOrthancException(env, code);
     }
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
   }
 }
 
@@ -1552,7 +1552,7 @@ JNIEXPORT jstring JNI_OrthancPluginDicomBufferToJson(JNIEnv* env, jobject sdkObj
       , c_arg0.GetData(), c_arg0.GetSize(), static_cast<OrthancPluginDicomToJsonFormat>(arg2), static_cast<OrthancPluginDicomToJsonFlags>(arg3), arg4));
     if (s.GetValue() == NULL)
     {
-      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
       return NULL;
     }
     else
@@ -1560,7 +1560,7 @@ JNIEXPORT jstring JNI_OrthancPluginDicomBufferToJson(JNIEnv* env, jobject sdkObj
       jstring t = env->NewStringUTF(s.GetValue());
       if (t == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -1571,12 +1571,12 @@ JNIEXPORT jstring JNI_OrthancPluginDicomBufferToJson(JNIEnv* env, jobject sdkObj
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -1591,7 +1591,7 @@ JNIEXPORT jstring JNI_OrthancPluginDicomInstanceToJson(JNIEnv* env, jobject sdkO
       , c_arg0.GetValue(), static_cast<OrthancPluginDicomToJsonFormat>(arg1), static_cast<OrthancPluginDicomToJsonFlags>(arg2), arg3));
     if (s.GetValue() == NULL)
     {
-      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
       return NULL;
     }
     else
@@ -1599,7 +1599,7 @@ JNIEXPORT jstring JNI_OrthancPluginDicomInstanceToJson(JNIEnv* env, jobject sdkO
       jstring t = env->NewStringUTF(s.GetValue());
       if (t == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -1610,12 +1610,12 @@ JNIEXPORT jstring JNI_OrthancPluginDicomInstanceToJson(JNIEnv* env, jobject sdkO
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -1634,7 +1634,7 @@ JNIEXPORT jbyteArray JNI_OrthancPluginCreateDicom(JNIEnv* env, jobject sdkObject
       jbyteArray answer = env->NewByteArray(b.GetSize());
       if (answer == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -1645,18 +1645,18 @@ JNIEXPORT jbyteArray JNI_OrthancPluginCreateDicom(JNIEnv* env, jobject sdkObject
     }
     else
     {
-      JavaEnvironment::ThrowException(env, code);
+      JavaEnvironment::ThrowOrthancException(env, code);
       return NULL;
     }
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -1670,7 +1670,7 @@ JNIEXPORT jlong JNI_OrthancPluginCreateImage(JNIEnv* env, jobject sdkObject, jin
       , static_cast<OrthancPluginPixelFormat>(arg0), arg1, arg2);
     if (answer == NULL)
     {
-      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
       return 0;
     }
     else
@@ -1680,12 +1680,12 @@ JNIEXPORT jlong JNI_OrthancPluginCreateImage(JNIEnv* env, jobject sdkObject, jin
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return 0;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return 0;
   }
 }
@@ -1700,7 +1700,7 @@ JNIEXPORT jlong JNI_OrthancPluginDecodeDicomImage(JNIEnv* env, jobject sdkObject
       , c_arg0.GetData(), c_arg0.GetSize(), arg2);
     if (answer == NULL)
     {
-      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
       return 0;
     }
     else
@@ -1710,12 +1710,12 @@ JNIEXPORT jlong JNI_OrthancPluginDecodeDicomImage(JNIEnv* env, jobject sdkObject
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return 0;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return 0;
   }
 }
@@ -1730,7 +1730,7 @@ JNIEXPORT jstring JNI_OrthancPluginComputeMd5(JNIEnv* env, jobject sdkObject, jb
       , c_arg0.GetData(), c_arg0.GetSize()));
     if (s.GetValue() == NULL)
     {
-      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
       return NULL;
     }
     else
@@ -1738,7 +1738,7 @@ JNIEXPORT jstring JNI_OrthancPluginComputeMd5(JNIEnv* env, jobject sdkObject, jb
       jstring t = env->NewStringUTF(s.GetValue());
       if (t == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -1749,12 +1749,12 @@ JNIEXPORT jstring JNI_OrthancPluginComputeMd5(JNIEnv* env, jobject sdkObject, jb
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -1769,7 +1769,7 @@ JNIEXPORT jstring JNI_OrthancPluginComputeSha1(JNIEnv* env, jobject sdkObject, j
       , c_arg0.GetData(), c_arg0.GetSize()));
     if (s.GetValue() == NULL)
     {
-      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
       return NULL;
     }
     else
@@ -1777,7 +1777,7 @@ JNIEXPORT jstring JNI_OrthancPluginComputeSha1(JNIEnv* env, jobject sdkObject, j
       jstring t = env->NewStringUTF(s.GetValue());
       if (t == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -1788,12 +1788,12 @@ JNIEXPORT jstring JNI_OrthancPluginComputeSha1(JNIEnv* env, jobject sdkObject, j
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -1807,7 +1807,7 @@ JNIEXPORT jstring JNI_OrthancPluginGenerateUuid(JNIEnv* env, jobject sdkObject)
       ));
     if (s.GetValue() == NULL)
     {
-      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
       return NULL;
     }
     else
@@ -1815,7 +1815,7 @@ JNIEXPORT jstring JNI_OrthancPluginGenerateUuid(JNIEnv* env, jobject sdkObject)
       jstring t = env->NewStringUTF(s.GetValue());
       if (t == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -1826,12 +1826,12 @@ JNIEXPORT jstring JNI_OrthancPluginGenerateUuid(JNIEnv* env, jobject sdkObject)
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -1846,7 +1846,7 @@ JNIEXPORT jlong JNI_OrthancPluginCreateFindMatcher(JNIEnv* env, jobject sdkObjec
       , c_arg0.GetData(), c_arg0.GetSize());
     if (answer == NULL)
     {
-      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
       return 0;
     }
     else
@@ -1856,12 +1856,12 @@ JNIEXPORT jlong JNI_OrthancPluginCreateFindMatcher(JNIEnv* env, jobject sdkObjec
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return 0;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return 0;
   }
 }
@@ -1875,7 +1875,7 @@ JNIEXPORT jlong JNI_OrthancPluginGetPeers(JNIEnv* env, jobject sdkObject)
       );
     if (answer == NULL)
     {
-      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
       return 0;
     }
     else
@@ -1885,12 +1885,12 @@ JNIEXPORT jlong JNI_OrthancPluginGetPeers(JNIEnv* env, jobject sdkObject)
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return 0;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return 0;
   }
 }
@@ -1905,7 +1905,7 @@ JNIEXPORT jstring JNI_OrthancPluginAutodetectMimeType(JNIEnv* env, jobject sdkOb
       , c_arg0.GetValue());
     if (s == NULL)
     {
-      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
       return NULL;
     }
     else
@@ -1915,12 +1915,12 @@ JNIEXPORT jstring JNI_OrthancPluginAutodetectMimeType(JNIEnv* env, jobject sdkOb
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -1936,11 +1936,11 @@ JNIEXPORT void JNI_OrthancPluginSetMetricsValue(JNIEnv* env, jobject sdkObject, 
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
   }
 }
 
@@ -1954,7 +1954,7 @@ JNIEXPORT jstring JNI_OrthancPluginGetTagName(JNIEnv* env, jobject sdkObject, js
       , arg0, arg1, c_arg2.GetValue()));
     if (s.GetValue() == NULL)
     {
-      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
       return NULL;
     }
     else
@@ -1962,7 +1962,7 @@ JNIEXPORT jstring JNI_OrthancPluginGetTagName(JNIEnv* env, jobject sdkObject, js
       jstring t = env->NewStringUTF(s.GetValue());
       if (t == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -1973,12 +1973,12 @@ JNIEXPORT jstring JNI_OrthancPluginGetTagName(JNIEnv* env, jobject sdkObject, js
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -1993,7 +1993,7 @@ JNIEXPORT jlong JNI_OrthancPluginCreateDicomInstance(JNIEnv* env, jobject sdkObj
       , c_arg0.GetData(), c_arg0.GetSize());
     if (answer == NULL)
     {
-      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
       return 0;
     }
     else
@@ -2003,12 +2003,12 @@ JNIEXPORT jlong JNI_OrthancPluginCreateDicomInstance(JNIEnv* env, jobject sdkObj
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return 0;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return 0;
   }
 }
@@ -2024,7 +2024,7 @@ JNIEXPORT jlong JNI_OrthancPluginTranscodeDicomInstance(JNIEnv* env, jobject sdk
       , c_arg0.GetData(), c_arg0.GetSize(), c_arg2.GetValue());
     if (answer == NULL)
     {
-      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
       return 0;
     }
     else
@@ -2034,12 +2034,12 @@ JNIEXPORT jlong JNI_OrthancPluginTranscodeDicomInstance(JNIEnv* env, jobject sdk
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return 0;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return 0;
   }
 }
@@ -2053,7 +2053,7 @@ JNIEXPORT jstring JNI_OrthancPluginGenerateRestApiAuthorizationToken(JNIEnv* env
       ));
     if (s.GetValue() == NULL)
     {
-      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
       return NULL;
     }
     else
@@ -2061,7 +2061,7 @@ JNIEXPORT jstring JNI_OrthancPluginGenerateRestApiAuthorizationToken(JNIEnv* env
       jstring t = env->NewStringUTF(s.GetValue());
       if (t == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -2072,12 +2072,12 @@ JNIEXPORT jstring JNI_OrthancPluginGenerateRestApiAuthorizationToken(JNIEnv* env
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -2097,7 +2097,7 @@ JNIEXPORT jbyteArray JNI_OrthancPluginCreateDicom2(JNIEnv* env, jobject sdkObjec
       jbyteArray answer = env->NewByteArray(b.GetSize());
       if (answer == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -2108,18 +2108,18 @@ JNIEXPORT jbyteArray JNI_OrthancPluginCreateDicom2(JNIEnv* env, jobject sdkObjec
     }
     else
     {
-      JavaEnvironment::ThrowException(env, code);
+      JavaEnvironment::ThrowOrthancException(env, code);
       return NULL;
     }
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -2135,11 +2135,11 @@ JNIEXPORT void JNI_OrthancPluginFreeDicomInstance(JNIEnv* env, jobject sdkObject
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
   }
 }
 
@@ -2153,7 +2153,7 @@ JNIEXPORT jstring JNI_OrthancPluginGetInstanceRemoteAet(JNIEnv* env, jobject sdk
       );
     if (s == NULL)
     {
-      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
       return NULL;
     }
     else
@@ -2163,12 +2163,12 @@ JNIEXPORT jstring JNI_OrthancPluginGetInstanceRemoteAet(JNIEnv* env, jobject sdk
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -2184,12 +2184,12 @@ JNIEXPORT jlong JNI_OrthancPluginGetInstanceSize(JNIEnv* env, jobject sdkObject,
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return 0;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return 0;
   }
 }
@@ -2204,7 +2204,7 @@ JNIEXPORT jstring JNI_OrthancPluginGetInstanceJson(JNIEnv* env, jobject sdkObjec
       ));
     if (s.GetValue() == NULL)
     {
-      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
       return NULL;
     }
     else
@@ -2212,7 +2212,7 @@ JNIEXPORT jstring JNI_OrthancPluginGetInstanceJson(JNIEnv* env, jobject sdkObjec
       jstring t = env->NewStringUTF(s.GetValue());
       if (t == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -2223,12 +2223,12 @@ JNIEXPORT jstring JNI_OrthancPluginGetInstanceJson(JNIEnv* env, jobject sdkObjec
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -2243,7 +2243,7 @@ JNIEXPORT jstring JNI_OrthancPluginGetInstanceSimplifiedJson(JNIEnv* env, jobjec
       ));
     if (s.GetValue() == NULL)
     {
-      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
       return NULL;
     }
     else
@@ -2251,7 +2251,7 @@ JNIEXPORT jstring JNI_OrthancPluginGetInstanceSimplifiedJson(JNIEnv* env, jobjec
       jstring t = env->NewStringUTF(s.GetValue());
       if (t == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -2262,12 +2262,12 @@ JNIEXPORT jstring JNI_OrthancPluginGetInstanceSimplifiedJson(JNIEnv* env, jobjec
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -2284,12 +2284,12 @@ JNIEXPORT jint JNI_OrthancPluginHasInstanceMetadata(JNIEnv* env, jobject sdkObje
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return 0;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return 0;
   }
 }
@@ -2305,7 +2305,7 @@ JNIEXPORT jstring JNI_OrthancPluginGetInstanceMetadata(JNIEnv* env, jobject sdkO
       , c_arg0.GetValue());
     if (s == NULL)
     {
-      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
       return NULL;
     }
     else
@@ -2315,12 +2315,12 @@ JNIEXPORT jstring JNI_OrthancPluginGetInstanceMetadata(JNIEnv* env, jobject sdkO
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -2336,12 +2336,12 @@ JNIEXPORT jint JNI_OrthancPluginGetInstanceOrigin(JNIEnv* env, jobject sdkObject
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return 0;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return 0;
   }
 }
@@ -2356,7 +2356,7 @@ JNIEXPORT jstring JNI_OrthancPluginGetInstanceTransferSyntaxUid(JNIEnv* env, job
       ));
     if (s.GetValue() == NULL)
     {
-      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
       return NULL;
     }
     else
@@ -2364,7 +2364,7 @@ JNIEXPORT jstring JNI_OrthancPluginGetInstanceTransferSyntaxUid(JNIEnv* env, job
       jstring t = env->NewStringUTF(s.GetValue());
       if (t == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -2375,12 +2375,12 @@ JNIEXPORT jstring JNI_OrthancPluginGetInstanceTransferSyntaxUid(JNIEnv* env, job
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -2396,12 +2396,12 @@ JNIEXPORT jint JNI_OrthancPluginHasInstancePixelData(JNIEnv* env, jobject sdkObj
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return 0;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return 0;
   }
 }
@@ -2417,12 +2417,12 @@ JNIEXPORT jint JNI_OrthancPluginGetInstanceFramesCount(JNIEnv* env, jobject sdkO
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return 0;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return 0;
   }
 }
@@ -2441,7 +2441,7 @@ JNIEXPORT jbyteArray JNI_OrthancPluginGetInstanceRawFrame(JNIEnv* env, jobject s
       jbyteArray answer = env->NewByteArray(b.GetSize());
       if (answer == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -2452,18 +2452,18 @@ JNIEXPORT jbyteArray JNI_OrthancPluginGetInstanceRawFrame(JNIEnv* env, jobject s
     }
     else
     {
-      JavaEnvironment::ThrowException(env, code);
+      JavaEnvironment::ThrowOrthancException(env, code);
       return NULL;
     }
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -2478,7 +2478,7 @@ JNIEXPORT jlong JNI_OrthancPluginGetInstanceDecodedFrame(JNIEnv* env, jobject sd
       , arg0);
     if (answer == NULL)
     {
-      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
       return 0;
     }
     else
@@ -2488,12 +2488,12 @@ JNIEXPORT jlong JNI_OrthancPluginGetInstanceDecodedFrame(JNIEnv* env, jobject sd
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return 0;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return 0;
   }
 }
@@ -2512,7 +2512,7 @@ JNIEXPORT jbyteArray JNI_OrthancPluginSerializeDicomInstance(JNIEnv* env, jobjec
       jbyteArray answer = env->NewByteArray(b.GetSize());
       if (answer == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -2523,18 +2523,18 @@ JNIEXPORT jbyteArray JNI_OrthancPluginSerializeDicomInstance(JNIEnv* env, jobjec
     }
     else
     {
-      JavaEnvironment::ThrowException(env, code);
+      JavaEnvironment::ThrowOrthancException(env, code);
       return NULL;
     }
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -2549,7 +2549,7 @@ JNIEXPORT jstring JNI_OrthancPluginGetInstanceAdvancedJson(JNIEnv* env, jobject 
       , static_cast<OrthancPluginDicomToJsonFormat>(arg0), static_cast<OrthancPluginDicomToJsonFlags>(arg1), arg2));
     if (s.GetValue() == NULL)
     {
-      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
       return NULL;
     }
     else
@@ -2557,7 +2557,7 @@ JNIEXPORT jstring JNI_OrthancPluginGetInstanceAdvancedJson(JNIEnv* env, jobject 
       jstring t = env->NewStringUTF(s.GetValue());
       if (t == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -2568,12 +2568,12 @@ JNIEXPORT jstring JNI_OrthancPluginGetInstanceAdvancedJson(JNIEnv* env, jobject 
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -2589,16 +2589,16 @@ JNIEXPORT void JNI_OrthancPluginFindAddAnswer(JNIEnv* env, jobject sdkObject, jl
       , c_arg0.GetData(), c_arg0.GetSize());
     if (code != OrthancPluginErrorCode_Success)
     {
-      JavaEnvironment::ThrowException(env, code);
+      JavaEnvironment::ThrowOrthancException(env, code);
     }
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
   }
 }
 
@@ -2612,16 +2612,16 @@ JNIEXPORT void JNI_OrthancPluginFindMarkIncomplete(JNIEnv* env, jobject sdkObjec
       );
     if (code != OrthancPluginErrorCode_Success)
     {
-      JavaEnvironment::ThrowException(env, code);
+      JavaEnvironment::ThrowOrthancException(env, code);
     }
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
   }
 }
 
@@ -2636,11 +2636,11 @@ JNIEXPORT void JNI_OrthancPluginFreeFindMatcher(JNIEnv* env, jobject sdkObject, 
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
   }
 }
 
@@ -2656,12 +2656,12 @@ JNIEXPORT jint JNI_OrthancPluginFindMatcherIsMatch(JNIEnv* env, jobject sdkObjec
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return 0;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return 0;
   }
 }
@@ -2677,12 +2677,12 @@ JNIEXPORT jint JNI_OrthancPluginGetFindQuerySize(JNIEnv* env, jobject sdkObject,
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return 0;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return 0;
   }
 }
@@ -2697,7 +2697,7 @@ JNIEXPORT jstring JNI_OrthancPluginGetFindQueryTagName(JNIEnv* env, jobject sdkO
       , arg0));
     if (s.GetValue() == NULL)
     {
-      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
       return NULL;
     }
     else
@@ -2705,7 +2705,7 @@ JNIEXPORT jstring JNI_OrthancPluginGetFindQueryTagName(JNIEnv* env, jobject sdkO
       jstring t = env->NewStringUTF(s.GetValue());
       if (t == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -2716,12 +2716,12 @@ JNIEXPORT jstring JNI_OrthancPluginGetFindQueryTagName(JNIEnv* env, jobject sdkO
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -2736,7 +2736,7 @@ JNIEXPORT jstring JNI_OrthancPluginGetFindQueryValue(JNIEnv* env, jobject sdkObj
       , arg0));
     if (s.GetValue() == NULL)
     {
-      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
       return NULL;
     }
     else
@@ -2744,7 +2744,7 @@ JNIEXPORT jstring JNI_OrthancPluginGetFindQueryValue(JNIEnv* env, jobject sdkObj
       jstring t = env->NewStringUTF(s.GetValue());
       if (t == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -2755,12 +2755,12 @@ JNIEXPORT jstring JNI_OrthancPluginGetFindQueryValue(JNIEnv* env, jobject sdkObj
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -2776,11 +2776,11 @@ JNIEXPORT void JNI_OrthancPluginFreeImage(JNIEnv* env, jobject sdkObject, jlong 
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
   }
 }
 
@@ -2795,12 +2795,12 @@ JNIEXPORT jint JNI_OrthancPluginGetImagePixelFormat(JNIEnv* env, jobject sdkObje
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return 0;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return 0;
   }
 }
@@ -2816,12 +2816,12 @@ JNIEXPORT jint JNI_OrthancPluginGetImageWidth(JNIEnv* env, jobject sdkObject, jl
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return 0;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return 0;
   }
 }
@@ -2837,12 +2837,12 @@ JNIEXPORT jint JNI_OrthancPluginGetImageHeight(JNIEnv* env, jobject sdkObject, j
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return 0;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return 0;
   }
 }
@@ -2858,12 +2858,12 @@ JNIEXPORT jint JNI_OrthancPluginGetImagePitch(JNIEnv* env, jobject sdkObject, jl
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return 0;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return 0;
   }
 }
@@ -2878,7 +2878,7 @@ JNIEXPORT jlong JNI_OrthancPluginConvertPixelFormat(JNIEnv* env, jobject sdkObje
       , static_cast<OrthancPluginPixelFormat>(arg0));
     if (answer == NULL)
     {
-      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
       return 0;
     }
     else
@@ -2888,12 +2888,12 @@ JNIEXPORT jlong JNI_OrthancPluginConvertPixelFormat(JNIEnv* env, jobject sdkObje
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return 0;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return 0;
   }
 }
@@ -2909,16 +2909,16 @@ JNIEXPORT void JNI_OrthancPluginDrawText(JNIEnv* env, jobject sdkObject, jlong s
       , arg0, c_arg1.GetValue(), arg2, arg3, arg4, arg5, arg6);
     if (code != OrthancPluginErrorCode_Success)
     {
-      JavaEnvironment::ThrowException(env, code);
+      JavaEnvironment::ThrowOrthancException(env, code);
     }
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
   }
 }
 
@@ -2933,11 +2933,11 @@ JNIEXPORT void JNI_OrthancPluginFreeJob(JNIEnv* env, jobject sdkObject, jlong se
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
   }
 }
 
@@ -2951,7 +2951,7 @@ JNIEXPORT jstring JNI_OrthancPluginSubmitJob(JNIEnv* env, jobject sdkObject, jlo
       , arg0));
     if (s.GetValue() == NULL)
     {
-      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
       return NULL;
     }
     else
@@ -2959,7 +2959,7 @@ JNIEXPORT jstring JNI_OrthancPluginSubmitJob(JNIEnv* env, jobject sdkObject, jlo
       jstring t = env->NewStringUTF(s.GetValue());
       if (t == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -2970,12 +2970,12 @@ JNIEXPORT jstring JNI_OrthancPluginSubmitJob(JNIEnv* env, jobject sdkObject, jlo
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -2991,11 +2991,11 @@ JNIEXPORT void JNI_OrthancPluginFreePeers(JNIEnv* env, jobject sdkObject, jlong 
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
   }
 }
 
@@ -3010,12 +3010,12 @@ JNIEXPORT jint JNI_OrthancPluginGetPeersCount(JNIEnv* env, jobject sdkObject, jl
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return 0;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return 0;
   }
 }
@@ -3030,7 +3030,7 @@ JNIEXPORT jstring JNI_OrthancPluginGetPeerName(JNIEnv* env, jobject sdkObject, j
       , arg0);
     if (s == NULL)
     {
-      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
       return NULL;
     }
     else
@@ -3040,12 +3040,12 @@ JNIEXPORT jstring JNI_OrthancPluginGetPeerName(JNIEnv* env, jobject sdkObject, j
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -3060,7 +3060,7 @@ JNIEXPORT jstring JNI_OrthancPluginGetPeerUrl(JNIEnv* env, jobject sdkObject, jl
       , arg0);
     if (s == NULL)
     {
-      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
       return NULL;
     }
     else
@@ -3070,12 +3070,12 @@ JNIEXPORT jstring JNI_OrthancPluginGetPeerUrl(JNIEnv* env, jobject sdkObject, jl
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -3091,7 +3091,7 @@ JNIEXPORT jstring JNI_OrthancPluginGetPeerUserProperty(JNIEnv* env, jobject sdkO
       , arg0, c_arg1.GetValue());
     if (s == NULL)
     {
-      JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+      JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
       return NULL;
     }
     else
@@ -3101,12 +3101,12 @@ JNIEXPORT jstring JNI_OrthancPluginGetPeerUserProperty(JNIEnv* env, jobject sdkO
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -3124,11 +3124,11 @@ JNIEXPORT void JNI_OrthancPluginAnswerBuffer(JNIEnv* env, jobject sdkObject, jlo
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
   }
 }
 
@@ -3144,11 +3144,11 @@ JNIEXPORT void JNI_OrthancPluginCompressAndAnswerPngImage(JNIEnv* env, jobject s
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
   }
 }
 
@@ -3164,11 +3164,11 @@ JNIEXPORT void JNI_OrthancPluginRedirect(JNIEnv* env, jobject sdkObject, jlong s
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
   }
 }
 
@@ -3183,11 +3183,11 @@ JNIEXPORT void JNI_OrthancPluginSendHttpStatusCode(JNIEnv* env, jobject sdkObjec
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
   }
 }
 
@@ -3203,11 +3203,11 @@ JNIEXPORT void JNI_OrthancPluginSendUnauthorized(JNIEnv* env, jobject sdkObject,
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
   }
 }
 
@@ -3223,11 +3223,11 @@ JNIEXPORT void JNI_OrthancPluginSendMethodNotAllowed(JNIEnv* env, jobject sdkObj
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
   }
 }
 
@@ -3244,11 +3244,11 @@ JNIEXPORT void JNI_OrthancPluginSetCookie(JNIEnv* env, jobject sdkObject, jlong 
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
   }
 }
 
@@ -3265,11 +3265,11 @@ JNIEXPORT void JNI_OrthancPluginSetHttpHeader(JNIEnv* env, jobject sdkObject, jl
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
   }
 }
 
@@ -3285,16 +3285,16 @@ JNIEXPORT void JNI_OrthancPluginStartMultipartAnswer(JNIEnv* env, jobject sdkObj
       , c_arg0.GetValue(), c_arg1.GetValue());
     if (code != OrthancPluginErrorCode_Success)
     {
-      JavaEnvironment::ThrowException(env, code);
+      JavaEnvironment::ThrowOrthancException(env, code);
     }
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
   }
 }
 
@@ -3309,16 +3309,16 @@ JNIEXPORT void JNI_OrthancPluginSendMultipartItem(JNIEnv* env, jobject sdkObject
       , c_arg0.GetData(), c_arg0.GetSize());
     if (code != OrthancPluginErrorCode_Success)
     {
-      JavaEnvironment::ThrowException(env, code);
+      JavaEnvironment::ThrowOrthancException(env, code);
     }
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
   }
 }
 
@@ -3334,11 +3334,11 @@ JNIEXPORT void JNI_OrthancPluginSendHttpStatus(JNIEnv* env, jobject sdkObject, j
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
   }
 }
 
@@ -3354,11 +3354,11 @@ JNIEXPORT void JNI_OrthancPluginCompressAndAnswerJpegImage(JNIEnv* env, jobject 
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
   }
 }
 
@@ -3374,11 +3374,11 @@ JNIEXPORT void JNI_OrthancPluginSetHttpErrorDetails(JNIEnv* env, jobject sdkObje
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
   }
 }
 
@@ -3394,16 +3394,16 @@ JNIEXPORT void JNI_OrthancPluginStorageAreaCreate(JNIEnv* env, jobject sdkObject
       , c_arg0.GetValue(), c_arg1.GetData(), arg2, static_cast<OrthancPluginContentType>(arg3));
     if (code != OrthancPluginErrorCode_Success)
     {
-      JavaEnvironment::ThrowException(env, code);
+      JavaEnvironment::ThrowOrthancException(env, code);
     }
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
   }
 }
 
@@ -3422,7 +3422,7 @@ JNIEXPORT jbyteArray JNI_OrthancPluginStorageAreaRead(JNIEnv* env, jobject sdkOb
       jbyteArray answer = env->NewByteArray(b.GetSize());
       if (answer == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -3433,18 +3433,18 @@ JNIEXPORT jbyteArray JNI_OrthancPluginStorageAreaRead(JNIEnv* env, jobject sdkOb
     }
     else
     {
-      JavaEnvironment::ThrowException(env, code);
+      JavaEnvironment::ThrowOrthancException(env, code);
       return NULL;
     }
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }
@@ -3460,16 +3460,16 @@ JNIEXPORT void JNI_OrthancPluginStorageAreaRemove(JNIEnv* env, jobject sdkObject
       , c_arg0.GetValue(), static_cast<OrthancPluginContentType>(arg1));
     if (code != OrthancPluginErrorCode_Success)
     {
-      JavaEnvironment::ThrowException(env, code);
+      JavaEnvironment::ThrowOrthancException(env, code);
     }
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
   }
 }
 
@@ -3483,16 +3483,16 @@ JNIEXPORT void JNI_OrthancPluginReconstructMainDicomTags(JNIEnv* env, jobject sd
       , static_cast<OrthancPluginResourceType>(arg0));
     if (code != OrthancPluginErrorCode_Success)
     {
-      JavaEnvironment::ThrowException(env, code);
+      JavaEnvironment::ThrowOrthancException(env, code);
     }
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
   }
 }
 
@@ -3507,16 +3507,16 @@ JNIEXPORT void JNI_OrthancPluginWorklistAddAnswer(JNIEnv* env, jobject sdkObject
       , reinterpret_cast<OrthancPluginWorklistQuery*>(static_cast<intptr_t>(arg0)), c_arg1.GetData(), c_arg1.GetSize());
     if (code != OrthancPluginErrorCode_Success)
     {
-      JavaEnvironment::ThrowException(env, code);
+      JavaEnvironment::ThrowOrthancException(env, code);
     }
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
   }
 }
 
@@ -3530,16 +3530,16 @@ JNIEXPORT void JNI_OrthancPluginWorklistMarkIncomplete(JNIEnv* env, jobject sdkO
       );
     if (code != OrthancPluginErrorCode_Success)
     {
-      JavaEnvironment::ThrowException(env, code);
+      JavaEnvironment::ThrowOrthancException(env, code);
     }
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
   }
 }
 
@@ -3555,12 +3555,12 @@ JNIEXPORT jint JNI_OrthancPluginWorklistIsMatch(JNIEnv* env, jobject sdkObject, 
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return 0;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return 0;
   }
 }
@@ -3579,7 +3579,7 @@ JNIEXPORT jbyteArray JNI_OrthancPluginWorklistGetDicomQuery(JNIEnv* env, jobject
       jbyteArray answer = env->NewByteArray(b.GetSize());
       if (answer == NULL)
       {
-        JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_NotEnoughMemory);
+        JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_NotEnoughMemory);
         return NULL;
       }
       else
@@ -3590,18 +3590,18 @@ JNIEXPORT jbyteArray JNI_OrthancPluginWorklistGetDicomQuery(JNIEnv* env, jobject
     }
     else
     {
-      JavaEnvironment::ThrowException(env, code);
+      JavaEnvironment::ThrowOrthancException(env, code);
       return NULL;
     }
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
     return NULL;
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
     return NULL;
   }
 }

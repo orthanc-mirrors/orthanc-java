@@ -22,6 +22,9 @@
  **/
 
 
+#include "JavaEnvironment.h"
+#include "JavaVirtualMachine.h"
+
 #include <orthanc/OrthancCPlugin.h>
 
 #include <cassert>
@@ -38,313 +41,7 @@
 
 #include "Mutex.h"
 
-static OrthancPluginContext* context_ = NULL;
-
-
-
-static const char* JAVA_EXCEPTION_CLASS = "be/uclouvain/orthanc/OrthancException";  
-
-class JavaVirtualMachine : public NonCopyable
-{
-private:
-  JavaVM *jvm_;
-
-public:
-  JavaVirtualMachine(const std::string& classPath)
-  {
-    std::string classPathOption = "-Djava.class.path=" + classPath;
-
-    std::vector<JavaVMOption> options;
-    options.resize(2);
-    options[0].optionString = const_cast<char*>(classPathOption.c_str());
-    options[0].extraInfo = NULL;
-    options[1].optionString = const_cast<char*>("-Xcheck:jni");
-    options[1].extraInfo = NULL;
-
-    JavaVMInitArgs vm_args;
-    vm_args.version  = JNI_VERSION_1_6;
-    vm_args.nOptions = options.size();
-    vm_args.options  = (options.empty() ? NULL : &options[0]);
-    vm_args.ignoreUnrecognized = false;
-
-    JNIEnv* env = NULL;
-    jint res = JNI_CreateJavaVM(&jvm_, (void **) &env, &vm_args);
-    if (res != JNI_OK ||
-        jvm_ == NULL ||
-        env == NULL)
-    {
-      throw std::runtime_error("Cannot create the JVM");
-    }
-  }
-
-  ~JavaVirtualMachine()
-  {
-    jvm_->DestroyJavaVM();
-  }
-
-  JavaVM& GetValue()
-  {
-    assert(jvm_ != NULL);
-    return *jvm_;
-  }
-};
-
-
-class JavaEnvironment : public NonCopyable
-{
-private:
-  JavaVM *jvm_;
-  JNIEnv *env_;
-
-public:
-  JavaEnvironment(JNIEnv* env) :
-    jvm_(NULL),
-    env_(env)
-  {
-    if (env_ == NULL)
-    {
-      throw std::runtime_error("Null pointer");
-    }
-  }
-  
-  JavaEnvironment(JavaVirtualMachine& jvm) :
-    jvm_(&jvm.GetValue())
-  {
-    jint status = jvm_->GetEnv((void **) &env_, JNI_VERSION_1_6);
-
-    switch (status)
-    {
-      case JNI_OK:
-        break;
-
-      case JNI_EDETACHED:
-      {
-        jint code = jvm_->AttachCurrentThread((void **) &env_, NULL);
-        if (code != JNI_OK)
-        {
-          throw std::runtime_error("Cannot attach thread");
-        }
-        break;
-      }
-
-      case JNI_EVERSION:
-        throw std::runtime_error("JNI version not supported");
-
-      default:
-        throw std::runtime_error("Not implemented");
-    }
-
-    if (env_ == NULL)
-    {
-      throw std::runtime_error("Error inside JNI");
-    }
-  }
-
-  ~JavaEnvironment()
-  {
-    if (jvm_ != NULL)
-    {
-      jvm_->DetachCurrentThread();
-    }
-  }
-
-  void CheckException()
-  {
-    if (env_->ExceptionCheck() == JNI_TRUE)
-    {
-      env_->ExceptionClear();
-      throw std::runtime_error("An exception has occurred in Java");
-    }
-  }
-
-  JNIEnv& GetValue()
-  {
-    assert(env_ != NULL);
-    return *env_;
-  }
-
-  void RunGarbageCollector()
-  {
-    assert(env_ != NULL);
-
-    jclass system = FindClass("java/lang/System");
-
-    jmethodID runFinalization = env_->GetStaticMethodID(system, "gc", "()V");
-    if (runFinalization != NULL)
-    {
-      env_->CallStaticVoidMethod(system, runFinalization);
-      CheckException();
-    }
-    else
-    {
-      throw std::runtime_error("Cannot run garbage collector");
-    }
-  }
-
-  jclass FindClass(const std::string& fqn)
-  {
-    jclass c = GetValue().FindClass(fqn.c_str());
-
-    if (c == NULL)
-    {
-      throw std::runtime_error("Unable to find class: " + fqn);
-    }
-    else
-    {
-      return c;
-    }
-  }
-
-  jclass GetObjectClass(jobject obj)
-  {
-    jclass c = GetValue().GetObjectClass(obj);
-
-    if (c == NULL)
-    {
-      throw std::runtime_error("Unable to get class of object");
-    }
-    else
-    {
-      return c;
-    }
-  }
-
-  jmethodID GetMethodID(jclass c,
-                        const std::string& method,
-                        const std::string& signature)
-  {
-    jmethodID m = GetValue().GetMethodID(c, method.c_str(), signature.c_str());
-
-    if (m == NULL)
-    {
-      throw std::runtime_error("Unable to locate method in class");
-    }
-    else
-    {
-      return m;
-    }
-  }
-
-  jobject ConstructJavaWrapper(const std::string& fqn,
-                               void* nativeObject)
-  {
-    jclass cls = FindClass(fqn);
-    jmethodID constructor = GetMethodID(cls, "<init>", "(J)V");
-    jobject obj = env_->NewObject(cls, constructor, reinterpret_cast<intptr_t>(nativeObject));
-    
-    if (obj == NULL)
-    {
-      throw std::runtime_error("Cannot create Java wrapper around C/C++ object: " + fqn);
-    }
-    else
-    {
-      return obj;
-    }
-  }
-
-  jbyteArray ConstructByteArray(const size_t size,
-                                const void* data)
-  {
-    assert(env_ != NULL);
-    jbyteArray obj = env_->NewByteArray(size);
-    if (obj == NULL)
-    {
-      throw std::runtime_error("Cannot create a byte array");
-    }
-    else
-    {
-      if (size > 0)
-      {
-        env_->SetByteArrayRegion(obj, 0, size, reinterpret_cast<const jbyte*>(data));
-      }
-
-      return obj;
-    }
-  }
-
-  jbyteArray ConstructByteArray(const std::string& data)
-  {
-    return ConstructByteArray(data.size(), data.c_str());
-  }
-
-  void RegisterNatives(const std::string& fqn,
-                       const std::vector<JNINativeMethod>& methods)
-  {
-    if (!methods.empty())
-    {
-      if (env_->RegisterNatives(FindClass(fqn), &methods[0], methods.size()) < 0)
-      {
-        throw std::runtime_error("Unable to register the native methods");
-      }
-    }
-  }
-
-  void ThrowException(const std::string& fqn,
-                      const std::string& message)
-  {
-    if (GetValue().ThrowNew(FindClass(fqn), message.c_str()) != 0)
-    {
-      std::string message = "Cannot throw exception " + fqn;
-      OrthancPluginLogError(context_, message.c_str());
-    }
-  }
-
-  void ThrowException(const std::string& message)
-  {
-    ThrowException(JAVA_EXCEPTION_CLASS, message);
-  }
-
-  void ThrowException(OrthancPluginErrorCode code)
-  {
-    ThrowException(JAVA_EXCEPTION_CLASS, OrthancPluginGetErrorDescription(context_, code));
-  }
-
-  jobject ConstructEnumValue(const std::string& fqn,
-                             int value)
-  {
-    assert(env_ != NULL);
-    jclass cls = FindClass(fqn);
-
-    std::string signature = "(I)L" + fqn + ";";
-    jmethodID constructor = env_->GetStaticMethodID(cls, "getInstance", signature.c_str());
-    if (constructor != NULL)
-    {
-      jobject obj = env_->CallStaticObjectMethod(cls, constructor, static_cast<jint>(value));
-      CheckException();
-      return obj;
-    }
-    else
-    {
-      char buf[16];
-      sprintf(buf, "%d", value);
-      throw std::runtime_error("Cannot create enumeration value: " + fqn + " " + buf);
-    }
-  }
-
-  
-  static void ThrowException(JNIEnv* env,
-                             const std::string& fqn,
-                             const std::string& message)
-  {
-    JavaEnvironment e(env);
-    e.ThrowException(fqn, message);
-  }
-  
-  static void ThrowException(JNIEnv* env,
-                             const std::string& message)
-  {
-    JavaEnvironment e(env);
-    e.ThrowException(message);
-  }
-
-  static void ThrowException(JNIEnv* env,
-                             OrthancPluginErrorCode code)
-  {
-    JavaEnvironment e(env);
-    e.ThrowException(code);
-  }
-};
-
+OrthancPluginContext* context_ = NULL;
 
 static std::unique_ptr<JavaVirtualMachine> java_;
 
@@ -933,11 +630,11 @@ JNIEXPORT void RegisterOnChangeCallback(JNIEnv* env, jobject sdkObject, jobject 
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
   }
 }
 
@@ -952,11 +649,11 @@ JNIEXPORT void RegisterOnRestRequestCallback(JNIEnv* env, jobject sdkObject, jst
   }
   catch (std::runtime_error& e)
   {
-    JavaEnvironment::ThrowException(env, e.what());
+    JavaEnvironment::ThrowOrthancException(env, e.what());
   }
   catch (...)
   {
-    JavaEnvironment::ThrowException(env, OrthancPluginErrorCode_Plugin);
+    JavaEnvironment::ThrowOrthancException(env, OrthancPluginErrorCode_Plugin);
   }
 }
 
