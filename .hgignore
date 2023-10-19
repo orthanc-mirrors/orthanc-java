@@ -14,3 +14,6 @@ Plugin/w64/
 Samples/Basic/.idea/
 Samples/Basic/OrthancStorage/
 Samples/Basic/target/
+Samples/Dcm4Che/.idea/
+Samples/Dcm4Che/OrthancStorage/
+Samples/Dcm4Che/target/
