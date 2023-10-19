@@ -961,6 +961,60 @@ JNIEXPORT void RegisterOnRestRequestCallback(JNIEnv* env, jobject sdkObject, jst
 }
 
 
+static void ParseJson(Json::Value& target,
+                      const std::string& source)
+{
+  Json::CharReaderBuilder builder;
+  builder.settings_["collectComments"] = false;
+
+  const std::unique_ptr<Json::CharReader> reader(builder.newCharReader());
+  assert(reader.get() != NULL);
+
+  JSONCPP_STRING err;
+  if (!reader->parse(source.c_str(), source.c_str() + source.size(), &target, &err))
+  {
+    throw std::runtime_error("Cannot parse JSON: " + err);
+  }
+}
+
+
+static bool HasOption(const Json::Value& json,
+                      const std::string& key,
+                      Json::ValueType type,
+                      bool isMandatory)
+{
+  if (!json.isMember(key))
+  {
+    if (isMandatory)
+    {
+      throw std::runtime_error("Missing configuration option for the Java plugin: \"" + key + "\"");
+    }
+    else
+    {
+      return false;
+    }
+  }
+  else if (json[key].type() == type)
+  {
+    return true;
+  }
+  else
+  {
+    throw std::runtime_error("The configuration option \"" + key + "\" for the Java plugin has not the proper type");
+  }
+}
+
+
+static std::string GetMandatoryString(const Json::Value& json,
+                                      const std::string& key)
+{
+  HasOption(json, key, Json::stringValue, true);
+  assert(json.isMember(key) &&
+         json[key].type() == Json::stringValue);
+  return json[key].asString();
+}
+
+
 extern "C"
 {
   ORTHANC_PLUGINS_API int32_t OrthancPluginInitialize(OrthancPluginContext* context)
@@ -980,6 +1034,8 @@ extern "C"
       return -1;
     }
 
+    OrthancPluginSetDescription(context, "Java plugin for Orthanc");
+
     try
     {
       {
@@ -996,7 +1052,35 @@ extern "C"
         }
       }
 
-      java_.reset(new JavaVirtualMachine("TODO"));
+      Json::Value globalConfiguration;
+
+      {
+        OrthancString tmp(OrthancPluginGetConfiguration(context));
+        ParseJson(globalConfiguration, tmp.GetValue());
+      }
+
+      static const std::string KEY_JAVA = "Java";
+      static const std::string KEY_ENABLED = "Enabled";
+      static const std::string KEY_CLASSPATH = "Classpath";
+      static const std::string KEY_INITIALIZATION_CLASS = "InitializationClass";
+
+      if (!HasOption(globalConfiguration, KEY_JAVA, Json::objectValue, false))
+      {
+        OrthancPluginLogInfo(context, "Java plugin is disabled");
+        return 0;
+      }
+
+      Json::Value javaConfiguration = globalConfiguration[KEY_JAVA];
+      assert(javaConfiguration.isObject());
+
+      if (HasOption(javaConfiguration, KEY_ENABLED, Json::booleanValue, false) &&
+          !javaConfiguration[KEY_ENABLED].asBool())
+      {
+        OrthancPluginLogInfo(context, "Java plugin is disabled");
+        return 0;
+      }
+
+      java_.reset(new JavaVirtualMachine(GetMandatoryString(javaConfiguration, KEY_CLASSPATH)));
 
       callbacksConfiguration_.reset(new CallbacksConfiguration);
       OrthancPluginRegisterOnChangeCallback(context_, OnChangeCallback);
@@ -1020,6 +1104,11 @@ extern "C"
               const_cast<char*>("(Ljava/lang/String;Lbe/uclouvain/orthanc/Callbacks$OnRestRequest;)V"),
               (void*) RegisterOnRestRequestCallback });
         env.RegisterNatives("be/uclouvain/orthanc/Callbacks", methods);
+      }
+
+      if (HasOption(javaConfiguration, KEY_INITIALIZATION_CLASS, Json::stringValue, false))
+      {
+        env.FindClass(javaConfiguration[KEY_INITIALIZATION_CLASS].asString());
       }
     }
     catch (std::runtime_error& e)
