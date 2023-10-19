@@ -24,6 +24,8 @@ package be.uclouvain.orthanc;
  **/
 
 
+// WARNING: Auto-generated file. Do not modify it by hand.
+
 /**
  * The available values for the Failure Reason (0008,1197) during storage
  * commitment.

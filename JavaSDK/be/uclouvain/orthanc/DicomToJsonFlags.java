@@ -24,6 +24,8 @@ package be.uclouvain.orthanc;
  **/
 
 
+// WARNING: Auto-generated file. Do not modify it by hand.
+
 /**
  * Flags to customize a DICOM-to-JSON conversion. By default, binary tags are
  * formatted using Data URI scheme.

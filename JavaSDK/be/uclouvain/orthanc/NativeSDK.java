@@ -24,6 +24,8 @@ package be.uclouvain.orthanc;
  **/
 
 
+// WARNING: Auto-generated file. Do not modify it by hand.
+
 class NativeSDK {
     public static native int OrthancPluginCheckVersionAdvanced(int arg0, int arg1, int arg2);
     public static native int OrthancPluginCheckVersion();

@@ -116,6 +116,7 @@ add_library(OrthancJava SHARED
   JavaString.cpp
   JavaVirtualMachine.cpp
   Mutex.cpp
+  NativeSDK.cpp
   OrthancBytes.cpp
   OrthancString.cpp
   Plugin.cpp

@@ -24,6 +24,8 @@ package be.uclouvain.orthanc;
  **/
 
 
+// WARNING: Auto-generated file. Do not modify it by hand.
+
 /**
  * 2D image managed by the Orthanc core
  **/

@@ -24,6 +24,8 @@ package be.uclouvain.orthanc;
  **/
 
 
+// WARNING: Auto-generated file. Do not modify it by hand.
+
 /**
  * The available modes to export a binary DICOM tag into a DICOMweb JSON or XML
  * document.

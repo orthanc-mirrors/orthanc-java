@@ -22,6 +22,20 @@
  **/
 
 
+// WARNING: Auto-generated file. Do not modify it by hand.
+
+#include "JavaBytes.h"
+#include "JavaEnvironment.h"
+#include "JavaString.h"
+#include "OrthancBytes.h"
+#include "OrthancString.h"
+
+#include <orthanc/OrthancCPlugin.h>
+
+#include <stdexcept>
+
+extern OrthancPluginContext* context_;
+
 
 JNIEXPORT jint JNI_OrthancPluginCheckVersionAdvanced(JNIEnv* env, jobject sdkObject, jint arg0, jint arg1, jint arg2)
 {
@@ -3607,7 +3621,7 @@ JNIEXPORT jbyteArray JNI_OrthancPluginWorklistGetDicomQuery(JNIEnv* env, jobject
 }
 
 
-static void JNI_LoadNatives(std::vector<JNINativeMethod>& methods)
+void JNI_LoadNatives(std::vector<JNINativeMethod>& methods)
 {
   methods.clear();
 

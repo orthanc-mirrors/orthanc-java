@@ -24,6 +24,8 @@ package be.uclouvain.orthanc;
  **/
 
 
+// WARNING: Auto-generated file. Do not modify it by hand.
+
 /**
  * The origin of a DICOM instance that has been received by Orthanc.
  **/

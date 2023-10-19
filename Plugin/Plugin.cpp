@@ -52,8 +52,8 @@ OrthancPluginContext* context_ = NULL;
 static std::unique_ptr<JavaVirtualMachine> java_;
 
 
-#include "NativeSDK.cpp"
-
+// This function is implemented in the "NativeSDK.cpp" auto-generated file
+extern void JNI_LoadNatives(std::vector<JNINativeMethod>& methods);
 
 
 #define MAX_REST_CALLBACKS  10

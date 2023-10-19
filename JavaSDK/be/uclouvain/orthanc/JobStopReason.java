@@ -24,6 +24,8 @@ package be.uclouvain.orthanc;
  **/
 
 
+// WARNING: Auto-generated file. Do not modify it by hand.
+
 /**
  * Explains why the job should stop and release the resources it has allocated.
  * This is especially important to disambiguate between the "paused" condition and

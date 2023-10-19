@@ -24,6 +24,8 @@ package be.uclouvain.orthanc;
  **/
 
 
+// WARNING: Auto-generated file. Do not modify it by hand.
+
 /**
  * The constraints on the tags (main DICOM tags and identifier tags) that must be
  * supported by the database plugins.

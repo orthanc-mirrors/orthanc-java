@@ -24,6 +24,8 @@ package be.uclouvain.orthanc;
  **/
 
 
+// WARNING: Auto-generated file. Do not modify it by hand.
+
 class NativeSDK {
     {{#functions}}
     public static native {{return.java_type}} {{c_function}}({{#class_name}}long self{{#has_args}},{{/has_args}} {{/class_name}}{{#args}}{{java_type}} {{name}}{{^last}}, {{/last}}{{/args}});
