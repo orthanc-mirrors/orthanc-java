@@ -3,10 +3,14 @@
 
 syntax: glob
 *~
+JavaSDK/i/
+Plugin/Build/
 Plugin/ThirdPartyDownloads/
 Plugin/i/
 Plugin/r/
+Plugin/s/
 Plugin/w32/
 Plugin/w64/
-Plugin/s/
-JavaSDK/i/
+Samples/Basic/.idea/
+Samples/Basic/OrthancStorage/
+Samples/Basic/target/

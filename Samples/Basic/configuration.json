@@ -1,0 +1,8 @@
+{
+  "Plugins" : [ "../../Plugin/Build" ],
+  "Java" : {
+    "Enabled" : true,
+    "Classpath" : "target/Basic-0.0-SNAPSHOT-jar-with-dependencies.jar",
+    "InitializationClass" : "Main"
+  }
+}
