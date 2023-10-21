@@ -1,0 +1,26 @@
+
+This sample Java plugin runs a FHIR server based on the HAPI library.
+Note that contrarily to the other samples that can run using Java 1.8,
+this Java plugin requires Java 11.
+
+(1) Make sure to build the C++ plugin:
+
+# cd ../../Plugin/
+# mkdir Build
+# cd Build
+# cmake .. -DCMAKE_BUILD_TYPE=Release
+# make -j4
+
+
+(2) Compile the Java plugin using Maven:
+
+# cd ../../Samples/FHIR
+# mvn package
+
+
+(3) Start Orthanc:
+
+On Ubuntu 22.04:
+
+# LD_LIBRARY_PATH=/usr/lib/jvm/java-11-openjdk-amd64/lib/server/ Orthanc ./configuration.json
+

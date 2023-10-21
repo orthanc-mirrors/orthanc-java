@@ -17,3 +17,6 @@ Samples/Basic/target/
 Samples/Dcm4Che/.idea/
 Samples/Dcm4Che/OrthancStorage/
 Samples/Dcm4Che/target/
+Samples/FHIR/.idea/
+Samples/FHIR/OrthancStorage/
+Samples/FHIR/target/
