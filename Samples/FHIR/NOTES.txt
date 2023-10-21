@@ -24,3 +24,10 @@ On Ubuntu 22.04:
 
 # LD_LIBRARY_PATH=/usr/lib/jvm/java-11-openjdk-amd64/lib/server/ Orthanc ./configuration.json
 
+
+(4) Access the FHIR server. For instance, using the FHIRPACK
+command-line client (https://gitlab.com/fhirpack/main):
+
+$ fp -s http://localhost:8042/fhir -o "getPatients" -p all -o "gatherSimplePaths id name.family name.given birthDate"
+$ fp -s http://localhost:8042/fhir -o "getEndpoints" -p all -o "gatherSimplePaths id address"
+$ fp -s http://localhost:8042/fhir -o "getImagingStudies" -p all -o "gatherSimplePaths identifier.value endpoint.reference subject.reference"
