@@ -1,7 +1,7 @@
 /**
  * SPDX-FileCopyrightText: 2023 Sebastien Jodogne, UCLouvain, Belgium
  * SPDX-License-Identifier: GPL-3.0-or-later
- */
+ **/
 
 /**
  * Java plugin for Orthanc

@@ -1,7 +1,7 @@
 /**
  * SPDX-FileCopyrightText: 2023 Sebastien Jodogne, UCLouvain, Belgium
  * SPDX-License-Identifier: GPL-3.0-or-later
- */
+ **/
 
 /**
  * Java plugin for Orthanc
@@ -23,10 +23,7 @@
 
 
 import be.uclouvain.orthanc.ResourceType;
-import ca.uhn.fhir.rest.annotation.IdParam;
-import ca.uhn.fhir.rest.annotation.OptionalParam;
-import ca.uhn.fhir.rest.annotation.Read;
-import ca.uhn.fhir.rest.annotation.Search;
+import ca.uhn.fhir.rest.annotation.*;
 import ca.uhn.fhir.rest.param.DateParam;
 import ca.uhn.fhir.rest.param.StringParam;
 import ca.uhn.fhir.rest.server.IResourceProvider;
@@ -69,7 +66,9 @@ public class PatientProvider implements IResourceProvider {
     public List<Patient> getPatients(@OptionalParam(name = Patient.SP_FAMILY) StringParam theFamilyName,
                                      @OptionalParam(name = Patient.SP_GIVEN) StringParam theGivenName,
                                      @OptionalParam(name = Patient.SP_IDENTIFIER) StringParam theIdentifier,
-                                     @OptionalParam(name = Patient.SP_BIRTHDATE) DateParam theBirthDate) {
+                                     @OptionalParam(name = Patient.SP_BIRTHDATE) DateParam theBirthDate,
+                                     @Offset Integer theOffset,
+                                     @Count Integer theCount) {
         Map<String, String> tags = new HashMap<>();
 
         if (theFamilyName != null &&
@@ -89,7 +88,18 @@ public class PatientProvider implements IResourceProvider {
             tags.put(Toolbox.TAG_PATIENT_BIRTH_DATE, Toolbox.formatDicomDate(theBirthDate.getValue()));
         }
 
-        List<OrthancResource> resources = OrthancResource.find(orthanc, ResourceType.PATIENT, tags, false);
+        final boolean caseSensitive = false;
+
+        List<OrthancResource> resources;
+
+        if (theOffset != null &&
+                theCount != null) {
+            resources = OrthancResource.find(orthanc, ResourceType.PATIENT, tags, caseSensitive, theOffset.intValue(), theCount.intValue());
+        } else if (theCount != null) {
+            resources = OrthancResource.find(orthanc, ResourceType.PATIENT, tags, caseSensitive, 0, theCount.intValue());
+        } else {
+            resources = OrthancResource.find(orthanc, ResourceType.PATIENT, tags, caseSensitive);
+        }
 
         List<Patient> patients = new ArrayList<>();
         for (OrthancResource resource : resources) {

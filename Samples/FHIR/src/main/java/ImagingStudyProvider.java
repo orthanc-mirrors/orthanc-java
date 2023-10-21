@@ -1,7 +1,7 @@
 /**
  * SPDX-FileCopyrightText: 2023 Sebastien Jodogne, UCLouvain, Belgium
  * SPDX-License-Identifier: GPL-3.0-or-later
- */
+ **/
 
 /**
  * Java plugin for Orthanc
@@ -22,10 +22,8 @@
  **/
 
 
-import ca.uhn.fhir.rest.annotation.IdParam;
-import ca.uhn.fhir.rest.annotation.OptionalParam;
-import ca.uhn.fhir.rest.annotation.Read;
-import ca.uhn.fhir.rest.annotation.Search;
+import be.uclouvain.orthanc.ResourceType;
+import ca.uhn.fhir.rest.annotation.*;
 import ca.uhn.fhir.rest.param.ReferenceParam;
 import ca.uhn.fhir.rest.param.StringParam;
 import ca.uhn.fhir.rest.server.IResourceProvider;
@@ -67,7 +65,9 @@ public class ImagingStudyProvider implements IResourceProvider {
 
     @Search()
     public List<ImagingStudy> getImagingStudies(@OptionalParam(name = ImagingStudy.SP_IDENTIFIER) StringParam theIdentifier,
-                                                @OptionalParam(name = ImagingStudy.SP_SUBJECT) ReferenceParam theSubject) {
+                                                @OptionalParam(name = ImagingStudy.SP_SUBJECT) ReferenceParam theSubject,
+                                                @Offset Integer theOffset,
+                                                @Count Integer theCount) {
         Map<String, String> tags = new HashMap<>();
 
         if (theIdentifier != null) {
@@ -79,7 +79,18 @@ public class ImagingStudyProvider implements IResourceProvider {
             tags.put(Toolbox.TAG_PATIENT_ID, theSubject.getValue());
         }
 
-        List<OrthancResource> resources = OrthancResource.find(orthanc, be.uclouvain.orthanc.ResourceType.STUDY, tags, false);
+        final boolean caseSensitive = false;
+
+        List<OrthancResource> resources;
+
+        if (theOffset != null &&
+                theCount != null) {
+            resources = OrthancResource.find(orthanc, ResourceType.STUDY, tags, caseSensitive, theOffset.intValue(), theCount.intValue());
+        } else if (theCount != null) {
+            resources = OrthancResource.find(orthanc, ResourceType.STUDY, tags, caseSensitive, 0, theCount.intValue());
+        } else {
+            resources = OrthancResource.find(orthanc, ResourceType.STUDY, tags, false);
+        }
 
         List<ImagingStudy> studies = new ArrayList<>();
         for (OrthancResource resource : resources) {

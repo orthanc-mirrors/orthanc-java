@@ -1,7 +1,7 @@
 /**
  * SPDX-FileCopyrightText: 2023 Sebastien Jodogne, UCLouvain, Belgium
  * SPDX-License-Identifier: GPL-3.0-or-later
- */
+ **/
 
 /**
  * Java plugin for Orthanc
@@ -119,10 +119,13 @@ public class OrthancResource {
         }
     }
 
-    public static List<OrthancResource> find(IOrthancConnection connection,
-                                             ResourceType type,
-                                             Map<String, String> tags,
-                                             boolean caseSensitive) {
+    private static List<OrthancResource> find(IOrthancConnection connection,
+                                              ResourceType type,
+                                              Map<String, String> tags,
+                                              boolean caseSensitive,
+                                              boolean hasPaging,
+                                              int since,
+                                              int limit) {
         JSONObject query = new JSONObject();
         for (Map.Entry<String, String> entry : tags.entrySet()) {
             query.put(entry.getKey(), entry.getValue());
@@ -133,6 +136,11 @@ public class OrthancResource {
         request.put("Query", query);
         request.put("Short", true);
         request.put("CaseSensitive", caseSensitive);
+
+        if (hasPaging) {
+            request.put("Since", since);
+            request.put("Limit", limit);
+        }
 
         switch (type) {
             case PATIENT:
@@ -163,6 +171,21 @@ public class OrthancResource {
         return result;
     }
 
+    public static List<OrthancResource> find(IOrthancConnection connection,
+                                             ResourceType type,
+                                             Map<String, String> tags,
+                                             boolean caseSensitive,
+                                             int since,
+                                             int limit) {
+        return find(connection, type, tags, caseSensitive, true, since, limit);
+    }
+
+    public static List<OrthancResource> find(IOrthancConnection connection,
+                                             ResourceType type,
+                                             Map<String, String> tags,
+                                             boolean caseSensitive) {
+        return find(connection, type, tags, caseSensitive, false, 0, 0);
+    }
 
     public Patient getFhirPatient() {
         if (type != ResourceType.PATIENT) {
