@@ -45,6 +45,7 @@ public class Toolbox {
     public static String TAG_SERIES_NUMBER = "0020,0011";
     public static String TAG_SOP_INSTANCE_UID = "0008,0018";
     public static String TAG_INSTANCE_NUMBER = "0020,0013";
+    public static String TAG_STUDY_DESCRIPTION = "0008,1030";
 
     public static Date parseDicomDate(String date) {
         Pattern pattern = Pattern.compile("^([0-9]{4})([0-9]{2})([0-9]{2})$");

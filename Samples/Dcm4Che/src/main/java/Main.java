@@ -45,7 +45,7 @@ public class Main {
                              Map<String, String> getParameters,
                              byte[] body) {
                 if (method != HttpMethod.POST) {
-                    output.sendMethodNotAllowed("POST");
+                    output.sendMethodNotAllowed("POST");  // Answer with HTTP status 405
                 } else {
                     ByteArrayInputStream stream = new ByteArrayInputStream(body);
 

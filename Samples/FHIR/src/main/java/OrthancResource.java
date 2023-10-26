@@ -197,7 +197,11 @@ public class OrthancResource {
 
         String birthDate = getTags().getOrDefault(Toolbox.TAG_PATIENT_BIRTH_DATE, "");
         if (birthDate != null) {
-            patient.setBirthDate(Toolbox.parseDicomDate(birthDate));
+            try {
+                patient.setBirthDate(Toolbox.parseDicomDate(birthDate));
+            } catch (IllegalArgumentException e) {
+                // Ignore incorrect dates
+            }
         }
 
         String patientName = getTags().getOrDefault(Toolbox.TAG_PATIENT_NAME, "");
@@ -248,7 +252,16 @@ public class OrthancResource {
 
         String studyDate = getTags().getOrDefault(Toolbox.TAG_STUDY_DATE, "");
         if (!studyDate.isEmpty()) {
-            study.setStarted(Toolbox.parseDicomDate(studyDate));
+            try {
+                study.setStarted(Toolbox.parseDicomDate(studyDate));
+            } catch (IllegalArgumentException e) {
+                // Ignore incorrect dates
+            }
+        }
+
+        String studyDescription = getTags().getOrDefault(Toolbox.TAG_STUDY_DESCRIPTION, "");
+        if (!studyDescription.isEmpty()) {
+            study.setDescription(studyDescription);
         }
 
         study.addIdentifier();
