@@ -20,13 +20,18 @@ this Java plugin requires Java 11.
 
 (3) Start Orthanc:
 
-On Ubuntu 22.04:
+On Ubuntu 20.04 or 22.04:
 
 # LD_LIBRARY_PATH=/usr/lib/jvm/java-11-openjdk-amd64/lib/server/ Orthanc ./configuration.json
 
 
 (4) Access the FHIR server. For instance, using the FHIRPACK
 command-line client (https://gitlab.com/fhirpack/main):
+
+On Ubuntu 20.04:
+
+$ python3.9 -m pip install --user --upgrade pip
+$ python3.9 -m pip install --user --upgrade cffi fhirpack
 
 $ fp -s http://localhost:8042/fhir -o "getPatients" -p all -o "gatherSimplePaths id name.family name.given birthDate"
 $ fp -s http://localhost:8042/fhir -o "getEndpoints" -p all -o "gatherSimplePaths id address"

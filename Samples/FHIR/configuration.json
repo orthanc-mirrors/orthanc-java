@@ -1,0 +1,11 @@
+{
+  "Plugins" : [
+    "../../Plugin/Build",
+    "./libOrthancDicomWeb.so"
+  ],
+  "Java" : {
+    "Enabled" : true,
+    "Classpath" : "target/OrthancFHIR-mainline-jar-with-dependencies.jar",
+    "InitializationClass" : "Main"
+  }
+}
