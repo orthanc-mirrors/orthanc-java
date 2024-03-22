@@ -47,6 +47,9 @@
 
 #include "Mutex.h"
 
+#define ORTHANC_PLUGIN_NAME  "java"
+
+
 OrthancPluginContext* context_ = NULL;
 
 static std::unique_ptr<JavaVirtualMachine> java_;
@@ -417,6 +420,21 @@ static std::string GetMandatoryString(const Json::Value& json,
 }
 
 
+static void SetPluginDescription(const std::string& description)
+{
+#if ORTHANC_PLUGINS_VERSION_IS_ABOVE(1, 12, 4)
+  OrthancPluginSetDescription2(context_, ORTHANC_PLUGIN_NAME, description.c_str());
+#else
+  _OrthancPluginSetPluginProperty params;
+  params.plugin = ORTHANC_PLUGIN_NAME;
+  params.property = _OrthancPluginProperty_Description;
+  params.value = description.c_str();
+
+  context_->InvokeService(context_, _OrthancPluginService_SetPluginProperty, &params);
+#endif
+}
+
+
 extern "C"
 {
   ORTHANC_PLUGINS_API int32_t OrthancPluginInitialize(OrthancPluginContext* context)
@@ -436,7 +454,7 @@ extern "C"
       return -1;
     }
 
-    OrthancPluginSetDescription(context, "Java plugin for Orthanc");
+    SetPluginDescription("Java plugin for Orthanc");
 
     try
     {
@@ -546,7 +564,7 @@ extern "C"
 
   ORTHANC_PLUGINS_API const char* OrthancPluginGetName()
   {
-    return "java";
+    return ORTHANC_PLUGIN_NAME;
   }
 
 
