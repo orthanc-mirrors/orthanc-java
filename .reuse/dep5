@@ -8,11 +8,11 @@ Copyright: 2023-2024 Sebastien Jodogne, UCLouvain, Belgium
 License: CC0-1.0
 
 Files: Resources/Orthanc/CMake/* Resources/Orthanc/Toolchains/*
-Copyright: 2012-2016 Sebastien Jodogne, University Hospital of Liege (Belgium), 2017-2023-2024 Osimis S.A. (Belgium), and 2021-2023-2024 UCLouvain (Belgium)
+Copyright: 2012-2016 Sebastien Jodogne, University Hospital of Liege (Belgium), 2017-2024 Osimis S.A. (Belgium), and 2021-2024 UCLouvain (Belgium)
 License: LGPL-3.0-or-later
 
 Files: Resources/Orthanc/Plugins/* Resources/Orthanc/Sdk-1.10.0/orthanc/OrthancCPlugin.h Resources/OrthancCPlugin-1.10.0.patch
-Copyright: 2012-2016 Sebastien Jodogne, University Hospital of Liege (Belgium), 2017-2023-2024 Osimis S.A. (Belgium), and 2021-2023-2024 UCLouvain (Belgium)
+Copyright: 2012-2016 Sebastien Jodogne, University Hospital of Liege (Belgium), 2017-2024 Osimis S.A. (Belgium), and 2021-2024 UCLouvain (Belgium)
 License: GPL-3.0-or-later
 
 Files: Resources/jdk8u382-b05-win32/* Resources/jdk8u382-b05-win64/*
