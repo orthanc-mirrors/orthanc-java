@@ -23,6 +23,7 @@
 
 
 #include "JavaEnvironment.h"
+#include "JavaString.h"
 
 #include <cassert>
 #include <stdexcept>
@@ -98,7 +99,20 @@ void JavaEnvironment::CheckException()
 {
   if (env_->ExceptionCheck() == JNI_TRUE)
   {
+    jthrowable e = env_->ExceptionOccurred();
     env_->ExceptionClear();
+
+    jclass clazz = env_->GetObjectClass(e);
+    if (clazz != NULL)
+    {
+      jmethodID getMessage = env_->GetMethodID(clazz, "getMessage", "()Ljava/lang/String;");
+      if (getMessage != NULL)
+      {
+        JavaString message(env_, (jstring) env_->CallObjectMethod(e, getMessage));
+        throw std::runtime_error("An exception has occurred in Java: " + std::string(message.GetValue()));
+      }
+    }
+
     throw std::runtime_error("An exception has occurred in Java");
   }
 }
