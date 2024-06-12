@@ -3,7 +3,7 @@ Upstream-Name: orthanc-java
 Upstream-Contact: Sebastien Jodogne <s.jodogne@gmail.com>
 Source: https://orthanc.uclouvain.be/
 
-Files: NEWS README Samples/Basic/NOTES.txt Samples/Dcm4Che/NOTES.txt Samples/FHIR/NOTES.txt Samples/FHIR/configuration.json
+Files: NEWS README Samples/Basic/NOTES.txt Samples/Dcm4Che/NOTES.txt Samples/FHIR/NOTES.txt Samples/FHIR/configuration.json Samples/MammographyDeepLearning/NOTES.txt Samples/MammographyDeepLearning/configuration.json
 Copyright: 2023-2024 Sebastien Jodogne, UCLouvain, Belgium
 License: CC0-1.0
 

@@ -19,4 +19,12 @@ Samples/Dcm4Che/OrthancStorage/
 Samples/Dcm4Che/target/
 Samples/FHIR/.idea/
 Samples/FHIR/OrthancStorage/
+Samples/FHIR/libOrthancDicomWeb.so
 Samples/FHIR/target/
+Samples/MammographyDeepLearning/.idea/
+Samples/MammographyDeepLearning/2024-03-08-retina_res50_trained_08_03.torchscript
+Samples/MammographyDeepLearning/2024-03-15-StoneWebViewer-DICOM-SR.zip
+Samples/MammographyDeepLearning/OrthancStorage/
+Samples/MammographyDeepLearning/dependency-reduced-pom.xml
+Samples/MammographyDeepLearning/libOrthancDicomWeb.so
+Samples/MammographyDeepLearning/target/
