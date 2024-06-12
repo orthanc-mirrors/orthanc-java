@@ -15,14 +15,17 @@ API. To run this sample Java plugin:
 (2) Compile the Java plugin using Maven:
 
 # cd ../../Samples/Basic
-# mvn package
+# mvn compile package
 
 
 (3) Start Orthanc:
 
-On Ubuntu 22.04:
+On Ubuntu 20.04 or 22.04 (replace "mainline" with the version of the
+Java plugin for Orthanc):
 
-# LD_LIBRARY_PATH=/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/amd64/server/ Orthanc ./configuration.json
+# LD_LIBRARY_PATH=/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/amd64/server/ \
+  ORTHANC_JAVA_VERSION=mainline \
+  Orthanc ./configuration.json
 
 
 (4) Call the REST API implemented by the Java plugin:

@@ -1,3 +1,8 @@
+/**
+ * SPDX-FileCopyrightText: 2023-2024 Sebastien Jodogne, UCLouvain, Belgium
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ **/
+
 {
   "Plugins" : [
     "../../Plugin/Build",
@@ -5,7 +10,7 @@
   ],
   "Java" : {
     "Enabled" : true,
-    "Classpath" : "target/OrthancFHIR-mainline-jar-with-dependencies.jar",
+    "Classpath" : "target/OrthancFHIR-${ORTHANC_JAVA_VERSION}-jar-with-dependencies.jar",
     "InitializationClass" : "Main"
   }
 }
