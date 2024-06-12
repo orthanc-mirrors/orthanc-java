@@ -23,6 +23,8 @@
 
 
 import be.uclouvain.orthanc.Callbacks;
+import be.uclouvain.orthanc.ChangeType;
+import be.uclouvain.orthanc.ResourceType;
 
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.rest.server.HardcodedServerAddressStrategy;
@@ -39,7 +41,7 @@ import javax.servlet.ServletException;
 
 
 public class Main extends RestfulServer {
-    Main() throws ServletException {
+    Main() {
         setFhirContext(FhirContext.forR5());
 
         setServerName("Orthanc FHIR server");
@@ -66,15 +68,23 @@ public class Main extends RestfulServer {
         setResourceProviders(resourceProviders);
     }
 
-    static {
-        Main main;
+    private static Main main = new Main();
 
+    static {
         try {
-            main = new Main();
             main.init(new MockServletConfig());
         } catch (ServletException e) {
             throw new RuntimeException("Cannot start the HAPI FHIR server");
         }
+
+        Callbacks.register(new Callbacks.OnChange() {
+            @Override
+            public void call(ChangeType changeType, ResourceType resourceType, String resourceId) {
+                if (changeType == ChangeType.ORTHANC_STOPPED) {
+                    main.destroy();
+                }
+            }
+        });
 
         Callbacks.register("/fhir(/.*)", new FhirRequestHandler(main));
         Callbacks.register("/fhir", new FhirRequestHandler(main));
