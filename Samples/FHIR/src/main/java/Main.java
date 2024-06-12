@@ -23,26 +23,34 @@
 
 
 import be.uclouvain.orthanc.Callbacks;
-import be.uclouvain.orthanc.Functions;
 
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.rest.server.HardcodedServerAddressStrategy;
 import ca.uhn.fhir.rest.server.IResourceProvider;
 import ca.uhn.fhir.rest.server.RestfulServer;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.mock.web.MockServletConfig;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Properties;
 import javax.servlet.ServletException;
 
 
 public class Main extends RestfulServer {
     Main() throws ServletException {
         setFhirContext(FhirContext.forR5());
+
+        setServerName("Orthanc FHIR server");
+
+        try (InputStream is = Main.class.getResourceAsStream("app.properties")) {
+            Properties properties = new Properties();
+            properties.load(is);
+            setServerVersion(properties.getProperty("orthanc_java.version"));
+        } catch (IOException e) {
+            // Ignore error
+        }
 
         FhirConfiguration configuration = new FhirConfiguration();
         setServerAddressStrategy(new HardcodedServerAddressStrategy(configuration.getServerBaseUrl()));

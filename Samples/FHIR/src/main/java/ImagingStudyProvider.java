@@ -29,7 +29,6 @@ import ca.uhn.fhir.rest.param.StringParam;
 import ca.uhn.fhir.rest.server.IResourceProvider;
 import org.hl7.fhir.r5.model.IdType;
 import org.hl7.fhir.r5.model.ImagingStudy;
-import org.hl7.fhir.r5.model.Patient;
 
 import java.util.ArrayList;
 import java.util.HashMap;

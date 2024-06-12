@@ -68,6 +68,7 @@
         <version>1.0.0</version>
         <executions>
           <execution>
+            <id>execution1</id>
             <phase>initialize</phase>
             <goals>
               <goal>read-project-properties</goal>
@@ -78,9 +79,20 @@
               </files>
             </configuration>
           </execution>
+
+          <!-- Write the properties as a resource that can be accessed from Java code -->
+          <execution>
+            <id>execution2</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>write-project-properties</goal>
+            </goals>
+            <configuration>
+              <outputFile>${project.build.outputDirectory}/app.properties</outputFile>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
-
     </plugins>
   </build>
 
