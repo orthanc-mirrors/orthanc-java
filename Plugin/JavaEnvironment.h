@@ -38,9 +38,9 @@ private:
   JNIEnv *env_;
 
 public:
-  JavaEnvironment(JNIEnv* env);
+  explicit JavaEnvironment(JNIEnv* env);
 
-  JavaEnvironment(JavaVirtualMachine& jvm);
+  explicit JavaEnvironment(JavaVirtualMachine& jvm);
 
   ~JavaEnvironment();
 

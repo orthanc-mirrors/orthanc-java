@@ -47,7 +47,7 @@ public:
     Mutex&  mutex_;
 
   public:
-    Locker(Mutex& mutex) :
+    explicit Locker(Mutex& mutex) :
       mutex_(mutex)
     {
       mutex_.Lock();

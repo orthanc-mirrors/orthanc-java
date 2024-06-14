@@ -35,7 +35,7 @@ private:
   JavaVM *jvm_;
 
 public:
-  JavaVirtualMachine(const std::string& classPath);
+  explicit JavaVirtualMachine(const std::string& classPath);
 
   ~JavaVirtualMachine();
 

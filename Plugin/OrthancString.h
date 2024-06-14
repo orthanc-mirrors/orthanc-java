@@ -33,7 +33,7 @@ private:
   char*  str_;
 
 public:
-  OrthancString(char* str) :
+  explicit OrthancString(char* str) :
     str_(str)
   {
   }

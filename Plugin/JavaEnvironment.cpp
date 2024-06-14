@@ -123,8 +123,8 @@ void JavaEnvironment::ThrowException(const std::string& fqn,
 {
   if (GetValue().ThrowNew(FindClass(fqn), message.c_str()) != 0)
   {
-    std::string message = "Cannot throw exception " + fqn;
-    OrthancPluginLogError(context_, message.c_str());
+    std::string tmp = "Cannot throw exception " + fqn;
+    OrthancPluginLogError(context_, tmp.c_str());
   }
 }
 
