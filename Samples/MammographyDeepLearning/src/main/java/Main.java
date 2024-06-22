@@ -31,6 +31,7 @@ import be.uclouvain.orthanc.HttpMethod;
 import be.uclouvain.orthanc.ResourceType;
 import be.uclouvain.orthanc.RestOutput;
 import org.apache.commons.compress.utils.IOUtils;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.awt.image.BufferedImage;
@@ -112,6 +113,19 @@ public class Main {
                         try {
                             if (!connection.isOrthancVersionAbove(1, 12, 5)) {
                                 throw new RuntimeException("Your version of Orthanc must be >= 1.12.5 to run this plugin");
+                            }
+
+                            JSONArray plugins = new JSONArray(connection.doGetAsString("/plugins"));
+
+                            boolean hasDicomWeb = false;
+                            for (int i = 0; i < plugins.length() && !hasDicomWeb; i++) {
+                                if (plugins.getString(i).equals("dicom-web")) {
+                                    hasDicomWeb = true;
+                                }
+                            }
+
+                            if (!hasDicomWeb) {
+                                throw new RuntimeException("The DICOMweb plugin is required, but is not installed");
                             }
                         } catch (IOException | InterruptedException e) {
                             throw new RuntimeException(e);
