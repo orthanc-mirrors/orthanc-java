@@ -432,8 +432,12 @@ for node in tu.cursor.get_children():
         continue
 
     if (node.kind == clang.cindex.CursorKind.FUNCTION_DECL and
-        node.spelling.startswith('OrthancPlugin') and
-        not node.spelling in SPECIAL_FUNCTIONS):
+        node.spelling.startswith('OrthancPlugin')):
+
+        if node.spelling in SPECIAL_FUNCTIONS:
+            countAllFunctions += 1
+            continue
+
         args = list(filter(lambda x: x.kind == clang.cindex.CursorKind.PARM_DECL,
                            node.get_children()))
 
@@ -550,6 +554,6 @@ with open(TARGET, 'w') as f:
     f.write(json.dumps(codeModel, sort_keys = True, indent = 4))
 
 print('\nTotal functions in the SDK: %d' % countAllFunctions)
-print('Total wrapped functions: %d' % countWrappedFunctions)
+print('Total wrapped functions (including destructors): %d' % countWrappedFunctions)
 print('Coverage: %.0f%%' % (float(countWrappedFunctions) /
                             float(countAllFunctions) * 100.0))
