@@ -3877,7 +3877,7 @@ extern "C"
     _OrthancPluginSendHttpStatus params;
     params.output = output;
     params.status = status;
-    params.body = reinterpret_cast<const char*>(body);
+    params.body = (const char*) body;
     params.bodySize = bodySize;
     context->InvokeService(context, _OrthancPluginService_SendHttpStatus, &params);
   }
