@@ -49,8 +49,8 @@ import java.util.zip.ZipFile;
 
 public class Main {
     private static final String MODEL_PATH = "2024-03-08-retina_res50_trained_08_03.torchscript";
-    private static final String STONE_VERSION = "2024-03-15-StoneWebViewer-DICOM-SR";
-    private static final String STONE_PATH = "2024-03-15-StoneWebViewer-DICOM-SR.zip";
+    private static final String STONE_VERSION = "2024-08-31-StoneWebViewer-DICOM-SR";
+    private static final String STONE_PATH = "2024-08-31-StoneWebViewer-DICOM-SR.zip";
 
     private static ZipFile stone;
     private static NDManager manager;
@@ -60,12 +60,12 @@ public class Main {
     static {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         try {
-            OrthancConnection.download("2024-03-08-retina_res50_trained_08_03.torchscript", executor,
-                    "https://orthanc.uclouvain.be/downloads/cross-platform/orthanc-mammography/models/2024-03-08-retina_res50_trained_08_03.torchscript",
+            OrthancConnection.download(MODEL_PATH, executor,
+                    "https://orthanc.uclouvain.be/downloads/cross-platform/orthanc-mammography/models/" + MODEL_PATH,
                     146029397L, "b3de8f562de683bc3515fe93ae102fd4");
-            OrthancConnection.download("2024-03-15-StoneWebViewer-DICOM-SR.zip", executor,
-                    "https://github.com/jodogne/orthanc-mammography/raw/master/viewer/2024-03-15-StoneWebViewer-DICOM-SR.zip",
-                    4742571L, "de952da6fc74a9d4b78ca5064a6a7318");
+            OrthancConnection.download(STONE_PATH, executor,
+                    "https://github.com/jodogne/orthanc-mammography/raw/master/viewer/" + STONE_PATH,
+                    4815178L, "86b52a17f86e4769d12e9ae680c4a99f");
         } catch (IOException | NoSuchAlgorithmException | InterruptedException e) {
             throw new RuntimeException(e);
         } finally {

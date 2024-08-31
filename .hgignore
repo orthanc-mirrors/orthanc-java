@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: CC0-1.0
 
 syntax: glob
+*.orig
 *~
 JavaSDK/i/
 Plugin/Build/
@@ -24,6 +25,7 @@ Samples/FHIR/target/
 Samples/MammographyDeepLearning/.idea/
 Samples/MammographyDeepLearning/2024-03-08-retina_res50_trained_08_03.torchscript
 Samples/MammographyDeepLearning/2024-03-15-StoneWebViewer-DICOM-SR.zip
+Samples/MammographyDeepLearning/2024-08-31-StoneWebViewer-DICOM-SR.zip
 Samples/MammographyDeepLearning/OrthancStorage/
 Samples/MammographyDeepLearning/dependency-reduced-pom.xml
 Samples/MammographyDeepLearning/libOrthancDicomWeb.so
