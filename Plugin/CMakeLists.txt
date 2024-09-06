@@ -75,7 +75,7 @@ else()
     message(FATAL_ERROR "Cannot statically link against JNI on this platform")
   endif()
   
-  include(FindJNI)
+  find_package(JNI REQUIRED COMPONENTS JVM)
   if (NOT JNI_FOUND)
     message(FATAL_ERROR "Unable to find JNI")
   endif()
