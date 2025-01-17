@@ -16,7 +16,7 @@ Copyright: 2012-2016 Sebastien Jodogne, University Hospital of Liege (Belgium), 
 License: GPL-3.0-or-later
 
 Files: Resources/Orthanc/Sdk-1.10.0/orthanc/OrthancCPlugin.h
-Copyright: 2012-2016 Sebastien Jodogne, University Hospital of Liege (Belgium), 2017-2023 Osimis S.A. (Belgium), and 2021-2025 Sebastien Jodogne, ICTEAM UCLouvain (Belgium)
+Copyright: 2012-2016 Sebastien Jodogne, University Hospital of Liege (Belgium), 2017-2022 Osimis S.A. (Belgium), and 2021-2022 Sebastien Jodogne, ICTEAM UCLouvain (Belgium)
 License: GPL-3.0-or-later
 
 Files: Resources/jdk8u382-b05-win32/* Resources/jdk8u382-b05-win64/*
