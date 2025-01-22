@@ -10,6 +10,7 @@
   "OrthancPluginRestOutput" : "Output for a call to the REST API of Orthanc",
   "OrthancPluginServerChunkedRequestReader" : "Read for a chunked HTTP request",
   "OrthancPluginStorageArea" : "Storage area plugin",
+  "OrthancPluginWebDavCollection" : "WebDAV collection",
   "OrthancPluginWorklistAnswers" : "Answers to a DICOM C-FIND worklist query",
   "OrthancPluginWorklistQuery" : "DICOM C-FIND worklist query"
 }
