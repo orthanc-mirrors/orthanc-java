@@ -47,7 +47,7 @@ parser.add_argument('--source',
                     default = os.path.join(ROOT, '../Resources/Orthanc/Sdk-%s/orthanc/OrthancCPlugin.h' % PLUGIN_SDK_VERSION),
                     help = 'input path to the Orthanc SDK header')
 parser.add_argument('--target',
-                    default = os.path.join(ROOT, 'CodeModel-%s.json' % PLUGIN_SDK_VERSION),
+                    default = os.path.join(ROOT, '../Resources/CodeModel-%s.json' % PLUGIN_SDK_VERSION),
                     help = 'target path to store the JSON code model')
 
 args = parser.parse_args()

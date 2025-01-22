@@ -1,0 +1,1 @@
+set(ORTHANC_SDK_VERSION "1.10.0")

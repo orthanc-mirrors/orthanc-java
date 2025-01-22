@@ -44,9 +44,10 @@ set(USE_LEGACY_JSONCPP OFF CACHE BOOL "Use the old branch 0.x.y of JsonCpp, that
 
 include(${CMAKE_SOURCE_DIR}/../Resources/Orthanc/CMake/JsonCppConfiguration.cmake)
 
+include(${CMAKE_SOURCE_DIR}/../OrthancSDKVersion.cmake)
 
 include_directories(BEFORE
-  ${CMAKE_SOURCE_DIR}/../Resources/Orthanc/Sdk-1.10.0/
+  ${CMAKE_SOURCE_DIR}/../Resources/Orthanc/Sdk-${ORTHANC_SDK_VERSION}/
   )
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows" AND

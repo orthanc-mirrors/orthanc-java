@@ -24,13 +24,20 @@ import argparse
 import json
 import os
 import pystache
+import re
 
 
 SOURCE = os.path.abspath(os.path.dirname(__file__))
 
+with open(os.path.join(os.path.dirname(__file__), '..', 'OrthancSDKVersion.cmake'), 'r') as f:
+    m = re.match('^set\(ORTHANC_SDK_VERSION "([0-9.]+)"\)$', f.read(), re.MULTILINE)
+    assert(m != None)
+    PLUGIN_SDK_VERSION = m.group(1)
+
+
 parser = argparse.ArgumentParser(description = 'Generate Java wrapper from code model.')
 parser.add_argument('--source',
-                    default = os.path.join(SOURCE, 'CodeModel.json'),
+                    default = os.path.join(SOURCE, '..', 'Resources', 'CodeModel-%s.json' % PLUGIN_SDK_VERSION),
                     help = 'location of the JSON code model')
 
 args = parser.parse_args()

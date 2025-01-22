@@ -3,7 +3,7 @@ Upstream-Name: orthanc-java
 Upstream-Contact: Sebastien Jodogne <s.jodogne@gmail.com>
 Source: https://orthanc.uclouvain.be/
 
-Files: NEWS README Samples/Basic/NOTES.txt Samples/Dcm4Che/NOTES.txt Samples/FHIR/NOTES.txt Samples/MammographyDeepLearning/NOTES.txt CodeGeneration/README.txt
+Files: NEWS README Samples/Basic/NOTES.txt Samples/Dcm4Che/NOTES.txt Samples/FHIR/NOTES.txt Samples/MammographyDeepLearning/NOTES.txt CodeGeneration/README.txt OrthancSDKVersion.cmake
 Copyright: 2023-2025 Sebastien Jodogne, ICTEAM UCLouvain (Belgium)
 License: CC0-1.0
 
@@ -15,7 +15,7 @@ Files: Resources/Orthanc/Plugins/* Resources/OrthancCPlugin-1.10.0.patch
 Copyright: 2012-2016 Sebastien Jodogne, University Hospital of Liege (Belgium), 2017-2023 Osimis S.A. (Belgium), and 2021-2025 Sebastien Jodogne, ICTEAM UCLouvain (Belgium)
 License: GPL-3.0-or-later
 
-Files: Resources/Orthanc/Sdk-1.10.0/orthanc/OrthancCPlugin.h
+Files: Resources/Orthanc/Sdk-1.10.0/orthanc/OrthancCPlugin.h Resources/Orthanc/Sdk-1.12.6/orthanc/OrthancCPlugin.h
 Copyright: 2012-2016 Sebastien Jodogne, University Hospital of Liege (Belgium), 2017-2022 Osimis S.A. (Belgium), and 2021-2022 Sebastien Jodogne, ICTEAM UCLouvain (Belgium)
 License: GPL-3.0-or-later
 
