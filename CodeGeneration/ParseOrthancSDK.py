@@ -33,15 +33,21 @@ import sys
 ROOT = os.path.dirname(os.path.realpath(sys.argv[0]))
 
 
+with open(os.path.join(os.path.dirname(__file__), '..', 'OrthancSDKVersion.cmake'), 'r') as f:
+    m = re.match('^set\(ORTHANC_SDK_VERSION "([0-9.]+)"\)$', f.read(), re.MULTILINE)
+    assert(m != None)
+    PLUGIN_SDK_VERSION = m.group(1)
+
+
 parser = argparse.ArgumentParser(description = 'Parse the Orthanc SDK.')
 parser.add_argument('--libclang',
-                    default = 'libclang-6.0.so.1',
+                    default = 'libclang-14.so.1',
                     help = 'manually provides the path to the libclang shared library')
 parser.add_argument('--source',
-                    default = os.path.join(ROOT, '../Resources/Orthanc/Sdk-1.10.0/orthanc/OrthancCPlugin.h'),
+                    default = os.path.join(ROOT, '../Resources/Orthanc/Sdk-%s/orthanc/OrthancCPlugin.h' % PLUGIN_SDK_VERSION),
                     help = 'input path to the Orthanc SDK header')
 parser.add_argument('--target',
-                    default = os.path.join(ROOT, 'CodeModel.json'),
+                    default = os.path.join(ROOT, 'CodeModel-%s.json' % PLUGIN_SDK_VERSION),
                     help = 'target path to store the JSON code model')
 
 args = parser.parse_args()

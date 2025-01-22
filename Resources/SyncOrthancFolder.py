@@ -32,7 +32,17 @@ import urllib.request
 import subprocess
 
 TARGET = os.path.join(os.path.dirname(__file__), 'Orthanc')
-PLUGIN_SDK_VERSION = '1.10.0'
+
+PLUGIN_SDK_VERSIONS = [
+    {
+        'Version' : '1.10.0',
+        'Patch' : os.path.join(os.path.abspath(os.path.dirname(__file__)), 'OrthancCPlugin-1.10.0.patch'),
+    },
+    {
+        'Version' : '1.12.6',
+    },
+]
+
 REPOSITORY = 'https://orthanc.uclouvain.be/hg/orthanc/raw-file'
 
 FILES = [
@@ -85,23 +95,25 @@ for f in FILES:
                       f[0],
                       os.path.join(f[1], os.path.basename(f[0])) ])
 
-for f in SDK:
-    commands.append([
-        'Orthanc-%s' % PLUGIN_SDK_VERSION, 
-        'OrthancServer/Plugins/Include/%s' % f,
-        'Sdk-%s/%s' % (PLUGIN_SDK_VERSION, f) 
-    ])
+for sdk in PLUGIN_SDK_VERSIONS:
+    for f in SDK:
+        commands.append([
+            'Orthanc-%s' % sdk['Version'],
+            'OrthancServer/Plugins/Include/%s' % f,
+            'Sdk-%s/%s' % (sdk['Version'], f)
+        ])
 
 
 pool = multiprocessing.Pool(10)  # simultaneous downloads
 pool.map(Download, commands)
 
 
-# Patch the SDK, if need be
-patch = os.path.join(os.path.abspath(os.path.dirname(__file__)),
-                     'OrthancCPlugin-%s.patch' % PLUGIN_SDK_VERSION)
-if os.path.exists(patch):
-    subprocess.check_call([ 'patch', '-p0', '-i', patch ],
-                          cwd = os.path.join(os.path.dirname(__file__),
-                                             'Orthanc',
-                                             'Sdk-%s' % PLUGIN_SDK_VERSION, 'orthanc'))
+for sdk in PLUGIN_SDK_VERSIONS:
+    # Patch the SDK, if need be
+    patch = sdk.get('Patch')
+    if patch != None:
+        assert(os.path.exists(patch))
+        subprocess.check_call([ 'patch', '-p0', '-i', patch ],
+                              cwd = os.path.join(os.path.dirname(__file__),
+                                                 'Orthanc',
+                                                 'Sdk-%s' % sdk['Version'], 'orthanc'))
