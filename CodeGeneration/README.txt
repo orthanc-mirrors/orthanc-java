@@ -22,5 +22,5 @@ Usage on Ubuntu 22.04
 $ sudo apt-get install python3-clang-14 python3-pystache
 $ python3 ./ParseOrthancSDK.py --libclang=libclang-14.so.1 \
           --source ../Resources/Orthanc/Sdk-1.10.0/orthanc/OrthancCPlugin.h \
-          --target ./CodeModel-1.10.0.json
-$ python3 ./CodeGeneration.py --source ./CodeModel-1.10.0.json
+          --target ../Resources/CodeModel-1.10.0.json
+$ python3 ./CodeGeneration.py --source ../Resources/CodeModel-1.10.0.json
