@@ -1,6 +1,9 @@
 Pending changes in the mainline
 ===============================
 
+* Added the "since_sdk" information for functions in the code model,
+  as derived from the ORTHANC_PLUGIN_SINCE_SDK macro in SDK >= 1.12.9
+
 
 Version 1.0 (2024-06-14)
 ========================

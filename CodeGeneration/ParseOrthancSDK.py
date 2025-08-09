@@ -444,6 +444,17 @@ for node in tu.cursor.get_children():
             countAllFunctions += 1
             continue
 
+        since_sdk = None
+        for annotate in filter(lambda x: x.kind == clang.cindex.CursorKind.ANNOTATE_ATTR,
+                               node.get_children()):
+            s = annotate.spelling.split(' ')
+            if s[0] == 'ORTHANC_PLUGIN_SINCE_SDK':
+                assert(len(s) == 2)
+                version = s[1].split('.')
+                assert(len(version) == 3)
+                assert(since_sdk == None)
+                since_sdk = [ int(version[0]), int(version[1]), int(version[2]) ]
+
         args = list(filter(lambda x: x.kind == clang.cindex.CursorKind.PARM_DECL,
                            node.get_children()))
 
@@ -496,6 +507,7 @@ for node in tu.cursor.get_children():
                     'c_function' : node.spelling,
                     'const' : args[0].type.get_pointee().is_const_qualified(),
                     'documentation' : doc,
+                    'since_sdk' : since_sdk,
                     }
 
                 if not EncodeArguments(method, args[1:]):
@@ -518,6 +530,7 @@ for node in tu.cursor.get_children():
             f = {
                 'c_function' : node.spelling,
                 'documentation' : doc,
+                'since_sdk' : since_sdk,
             }
 
             if not EncodeArguments(f, args):
