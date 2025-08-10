@@ -456,6 +456,15 @@ extern "C"
 
     SetPluginDescription("Java plugin for Orthanc");
 
+    {
+      char info[1024];
+      sprintf(info, "Version of the Orthanc SDK in use by the Java plugin: %d.%d.%d",
+              ORTHANC_PLUGINS_MINIMAL_MAJOR_NUMBER,
+              ORTHANC_PLUGINS_MINIMAL_MINOR_NUMBER,
+              ORTHANC_PLUGINS_MINIMAL_REVISION_NUMBER);
+      OrthancPluginLogWarning(context, info);
+    }
+
     try
     {
       {
