@@ -108,6 +108,23 @@ def ParseEnumValueDocumentation(comment):
                     result = result + ' ' + line
         return result.replace('@brief ', '')
 
+def InjectSinceSdk(target, node):
+    since_sdk = None
+
+    for child in node.get_children():
+        if child.kind == clang.cindex.CursorKind.ANNOTATE_ATTR:
+            s = child.spelling.split(' ')
+            if s[0] == 'ORTHANC_PLUGIN_SINCE_SDK':
+                assert(len(s) == 2)
+                version = s[1].split('.')
+                assert(len(version) == 3)
+                assert(since_sdk == None)  # Cannot be defined multiple time
+                since_sdk = [ int(version[0]), int(version[1]), int(version[2]) ]
+
+    if since_sdk != None:
+        target['since_sdk'] = since_sdk
+
+
 for node in tu.cursor.get_children():
     # Only consider the Orthanc SDK
     path = node.location.file.name
@@ -133,23 +150,33 @@ for node in tu.cursor.get_children():
                         raise Exception('Enumeration value without documentation: %s' % item.spelling)
 
                     key = item.spelling[len(name + '_'):]
-                    values.append({
+                    value = {
                         'key' : key,
                         'value' : item.enum_value,
                         'documentation' : ParseEnumValueDocumentation(item.raw_comment),
-                    })
+                    }
+
+                    InjectSinceSdk(value, item)
+                    values.append(value)
 
                 elif (item.kind == clang.cindex.CursorKind.ENUM_CONSTANT_DECL and
                       item.spelling == '_%s_INTERNAL' % name):
                     pass
 
+                elif (item.kind == clang.cindex.CursorKind.ANNOTATE_ATTR and
+                      item.spelling.startswith('ORTHANC_PLUGIN_SINCE_SDK ')):
+                    pass
+
                 else:
                     raise Exception('Ignoring unknown enumeration item: %s' % item.spelling)
 
-            enumerations[name] = {
+            value = {
                 'values' : values,
                 'documentation' : ParseEnumerationDocumentation(node.raw_comment),
             }
+
+            InjectSinceSdk(value, node)
+            enumerations[name] = value
 
         elif node.spelling == '':  # Unnamed enumeration (presumbaly "_OrthancPluginService")
             pass
@@ -163,10 +190,13 @@ for node in tu.cursor.get_children():
             node.spelling != '_OrthancPluginContext_t'):
 
             name = node.spelling[len('_') : -len('_t')]
-            classes[name] = {
+            value = {
                 'name' : name,
                 'methods' : [ ],
             }
+
+            InjectSinceSdk(value, node)
+            classes[name] = value
 
         elif node.spelling in [ '',  # This is an internal structure to call Orthanc SDK
                                 '_OrthancPluginContext_t' ]:
@@ -444,17 +474,6 @@ for node in tu.cursor.get_children():
             countAllFunctions += 1
             continue
 
-        since_sdk = None
-        for annotate in filter(lambda x: x.kind == clang.cindex.CursorKind.ANNOTATE_ATTR,
-                               node.get_children()):
-            s = annotate.spelling.split(' ')
-            if s[0] == 'ORTHANC_PLUGIN_SINCE_SDK':
-                assert(len(s) == 2)
-                version = s[1].split('.')
-                assert(len(version) == 3)
-                assert(since_sdk == None)
-                since_sdk = [ int(version[0]), int(version[1]), int(version[2]) ]
-
         args = list(filter(lambda x: x.kind == clang.cindex.CursorKind.PARM_DECL,
                            node.get_children()))
 
@@ -507,8 +526,9 @@ for node in tu.cursor.get_children():
                     'c_function' : node.spelling,
                     'const' : args[0].type.get_pointee().is_const_qualified(),
                     'documentation' : doc,
-                    'since_sdk' : since_sdk,
                     }
+
+                InjectSinceSdk(method, node)
 
                 if not EncodeArguments(method, args[1:]):
                     pass
@@ -530,8 +550,9 @@ for node in tu.cursor.get_children():
             f = {
                 'c_function' : node.spelling,
                 'documentation' : doc,
-                'since_sdk' : since_sdk,
             }
+
+            InjectSinceSdk(f, node)
 
             if not EncodeArguments(f, args):
                 pass
@@ -549,11 +570,17 @@ for node in tu.cursor.get_children():
 def FlattenEnumerations():
     result = []
     for (name, content) in enumerations.items():
-        result.append({
+        item = {
             'name' : name,
             'values' : content['values'],
             'documentation' : content['documentation'],
-            })
+        }
+
+        if 'since_sdk' in content:
+            item['since_sdk'] = content['since_sdk']
+
+        result.append(item)
+
     return result
 
 def FlattenDictionary(source):
