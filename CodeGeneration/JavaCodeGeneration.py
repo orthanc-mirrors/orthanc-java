@@ -36,7 +36,7 @@ ROOT = os.path.dirname(os.path.realpath(__file__))
 ## Parse the command-line arguments
 ##
 
-ORTHANC_SDK_DEFAULT_VERSION = CodeModel.ReadOrthancSdkDefaultVersion(os.path.join(ROOT, '..', 'Plugin', 'CMakeLists.txt'))
+ORTHANC_SDK_DEFAULT_VERSION = CodeModel.ReadOrthancSdkDefaultVersion(os.path.join(ROOT, '..', 'OrthancSDKVersion.cmake'))
 
 parser = argparse.ArgumentParser(description = 'Generate C++ native functions to wrap the Orthanc SDK in Java.')
 parser.add_argument('--sdk',
@@ -110,6 +110,8 @@ for enum in model['enumerations']:
     if CodeModel.IsPrimitiveAvailable(SDK_VERSION, enum):
         enum['values'] = list(filter(lambda value: CodeModel.IsPrimitiveAvailable(SDK_VERSION, value, key_prefix = enum['name']),
                                      enum['values']))
+
+        enum['values'][-1]['last'] = True
 
         with open(os.path.join(ROOT, 'JavaEnumeration.mustache'), 'r') as f:
             template = f.read()

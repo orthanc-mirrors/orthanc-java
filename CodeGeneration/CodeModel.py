@@ -415,8 +415,6 @@ def Load(path):
                 enum['values'][i]['documentation'] = list(map(lambda x: { 'line' : x },
                                                               FixLinesWidth([ enum['values'][i]['documentation'] ])))
 
-        enum['values'][-1]['last'] = True
-
         if 'documentation' in enum:
             enum['has_documentation'] = True
             enum['documentation'] = list(map(lambda x: { 'line' : x },
