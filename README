@@ -15,6 +15,14 @@ Installation and usage
 Build and usage instructions are available in the Orthanc Book:
 https://orthanc.uclouvain.be/book/plugins/java.html
 
+Note that since version 2.0 of this plugin, the build process requires
+the Pystache module to be installed in the Python environment used by
+CMake:
+https://pypi.org/project/pystache/
+
+On Debian/Ubuntu environments, it is sufficient to install the
+"python3-pystache" package. This dependency is not needed at runtime.
+
 
 Licensing
 ---------
