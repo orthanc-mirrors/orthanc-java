@@ -120,6 +120,17 @@
   </dependencyManagement>
 
   <dependencies>
+
+    <!-- Include the Orthanc Java SDK -->
+    <dependency>
+      <artifactId>OrthancJavaSDK</artifactId>
+      <groupId>OrthancJavaSDK</groupId>
+      <scope>system</scope>
+      <version>mainline</version>
+      <systemPath>${project.basedir}/../../JavaSDK/OrthancJavaSDK.jar</systemPath>
+    </dependency>
+
+    <!-- Include Deep Java Library -->
     <dependency>
       <groupId>ai.djl</groupId>
       <artifactId>api</artifactId>

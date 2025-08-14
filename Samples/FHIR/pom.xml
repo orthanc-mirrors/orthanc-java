@@ -41,26 +41,6 @@
         </configuration>
       </plugin>
 
-      <!-- Include the Orthanc Java SDK -->
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>add-source</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>add-source</goal>
-            </goals>
-            <configuration>
-              <sources>
-                <source>${project.basedir}/../../JavaSDK/be/uclouvain/orthanc</source>
-              </sources>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
       <!-- Sharing properties between the samples -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -102,6 +82,16 @@
 
   <dependencies>
 
+    <!-- Include the Orthanc Java SDK -->
+    <dependency>
+      <artifactId>OrthancJavaSDK</artifactId>
+      <groupId>OrthancJavaSDK</groupId>
+      <scope>system</scope>
+      <version>mainline</version>
+      <systemPath>${project.basedir}/../../JavaSDK/OrthancJavaSDK.jar</systemPath>
+    </dependency>
+
+    <!-- Include HAPI -->
     <dependency>
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>

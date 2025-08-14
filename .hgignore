@@ -5,6 +5,8 @@ syntax: glob
 *.orig
 *~
 CodeGeneration/__pycache__/
+JavaSDK/Build/
+JavaSDK/OrthancJavaSDK.jar
 JavaSDK/i/
 Plugin/Build/
 Plugin/ThirdPartyDownloads/

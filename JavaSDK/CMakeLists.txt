@@ -90,3 +90,8 @@ add_custom_command(TARGET OrthancJavaSDK
   WORKING_DIRECTORY ${JAVADOC_OUTPUT_DIR}
   COMMENT "Generating SDK documentation with javadoc" VERBATIM
   )
+
+install(
+  FILES ${CMAKE_CURRENT_BINARY_DIR}/OrthancJavaSDK.jar
+  DESTINATION .
+  )
