@@ -27,6 +27,8 @@ include(UseJava)
 
 set(CMAKE_JAVA_COMPILE_FLAGS "-source" "1.8" "-target" "1.8" "-Xdoclint:all/protected")
 
+
+
 file(GLOB JAVA_SOURCES
   ${CMAKE_SOURCE_DIR}/be/uclouvain/orthanc/*.java
   )

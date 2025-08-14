@@ -24,11 +24,6 @@ project(OrthancJavaPlugin)
 
 set(PLUGIN_VERSION "mainline")
 
-set(ORTHANC_SDK_DEFAULT_VERSION "1.10.0")
-
-# This list must correspond to the content of "./Resources/SyncOrthancFolder.py"
-set(ORTHANC_SDK_AVAILABLE_VERSIONS "1.10.0" "1.12.6")
-
 set(CMAKE_CXX_STANDARD 11)
 
 
@@ -52,17 +47,7 @@ set(USE_SYSTEM_JSONCPP ON CACHE BOOL "Use the system version of JsonCpp")
 set(USE_SYSTEM_JNI ON CACHE BOOL "Use the system version of JsonCpp")
 set(USE_LEGACY_JSONCPP OFF CACHE BOOL "Use the old branch 0.x.y of JsonCpp, that does not require a C++11 compiler (for LSB and old versions of Visual Studio)")
 
-# Generate the documentation about the "ORTHANC_SDK_VERSION" option
-set(tmp "Version of the Orthanc plugin SDK to use, if not using the system version (can be")
-foreach(version IN LISTS ORTHANC_SDK_AVAILABLE_VERSIONS)
-  set(tmp "${tmp} ${version},")
-endforeach()
-set(tmp "${tmp} or \"path\")")
-
-set(USE_SYSTEM_ORTHANC_SDK ON CACHE BOOL "Use the system-wide version of the Orthanc plugin SDK")
-set(ORTHANC_SDK_VERSION "${ORTHANC_SDK_DEFAULT_VERSION}" CACHE STRING "${tmp}")
-set(ORTHANC_SDK_PATH "" CACHE STRING "Path to the orthanc/OrthancCPlugin.h file, if ORTHANC_SDK_VERSION is set to \"path\"")
-
+include(${CMAKE_SOURCE_DIR}/../OrthancSDKVersion.cmake)
 
 include(${CMAKE_SOURCE_DIR}/../Resources/Orthanc/CMake/JsonCppConfiguration.cmake)
 

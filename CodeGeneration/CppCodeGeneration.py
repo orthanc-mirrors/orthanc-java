@@ -36,7 +36,7 @@ ROOT = os.path.dirname(os.path.realpath(__file__))
 ## Parse the command-line arguments
 ##
 
-ORTHANC_SDK_DEFAULT_VERSION = CodeModel.ReadOrthancSdkDefaultVersion(os.path.join(ROOT, '..', 'Plugin', 'CMakeLists.txt'))
+ORTHANC_SDK_DEFAULT_VERSION = CodeModel.ReadOrthancSdkDefaultVersion(os.path.join(ROOT, '..', 'OrthancSDKVersion.cmake'))
 
 parser = argparse.ArgumentParser(description = 'Generate C++ native functions to wrap the Orthanc SDK in Java.')
 parser.add_argument('--sdk',
