@@ -1,6 +1,10 @@
 Pending changes in the mainline
 ===============================
 
+
+=> Maximum SDK version: 1.12.9 <=
+=> Minimum SDK version: 1.10.0 (default) <=
+
 * The auto-generation of the Python wrapper is now part of the build,
   to exploit the ORTHANC_PLUGIN_SINCE_SDK macro. This provides backward
   compatibility with the SDK that is actually installed on the system
