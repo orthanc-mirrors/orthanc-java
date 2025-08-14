@@ -837,7 +837,7 @@ extern "C"
    **/
   typedef enum
   {
-    OrthancPluginDicomToJsonFlags_None                  = 0,         /*!< Default formatting */
+    OrthancPluginDicomToJsonFlags_None                  = 0,
     OrthancPluginDicomToJsonFlags_IncludeBinary         = (1 << 0),  /*!< Include the binary tags */
     OrthancPluginDicomToJsonFlags_IncludePrivateTags    = (1 << 1),  /*!< Include the private tags */
     OrthancPluginDicomToJsonFlags_IncludeUnknownTags    = (1 << 2),  /*!< Include the tags unknown by the dictionary */
@@ -858,7 +858,7 @@ extern "C"
    **/
   typedef enum
   {
-    OrthancPluginCreateDicomFlags_None                  = 0,         /*!< Default mode */
+    OrthancPluginCreateDicomFlags_None                  = 0,
     OrthancPluginCreateDicomFlags_DecodeDataUriScheme   = (1 << 0),  /*!< Decode fields encoded using data URI scheme */
     OrthancPluginCreateDicomFlags_GenerateIdentifiers   = (1 << 1),  /*!< Automatically generate DICOM identifiers */
 
@@ -975,46 +975,32 @@ extern "C"
    **/
   typedef enum
   {
-    /**
-     * Success: The DICOM instance is properly stored in the SCP
-     **/
     OrthancPluginStorageCommitmentFailureReason_Success = 0,
+    /*!< Success: The DICOM instance is properly stored in the SCP */
 
-    /**
-     * 0110H: A general failure in processing the operation was encountered
-     **/
     OrthancPluginStorageCommitmentFailureReason_ProcessingFailure = 1,
+    /*!< 0110H: A general failure in processing the operation was encountered */
 
-    /**
-     * 0112H: One or more of the elements in the Referenced SOP
-     * Instance Sequence was not available
-     **/
     OrthancPluginStorageCommitmentFailureReason_NoSuchObjectInstance = 2,
+    /*!< 0112H: One or more of the elements in the Referenced SOP
+      Instance Sequence was not available */
 
-    /**
-     * 0213H: The SCP does not currently have enough resources to
-     * store the requested SOP Instance(s)
-     **/
     OrthancPluginStorageCommitmentFailureReason_ResourceLimitation = 3,
+    /*!< 0213H: The SCP does not currently have enough resources to
+      store the requested SOP Instance(s) */
 
-    /**
-     * 0122H: Storage Commitment has been requested for a SOP Instance
-     * with a SOP Class that is not supported by the SCP
-     **/
     OrthancPluginStorageCommitmentFailureReason_ReferencedSOPClassNotSupported = 4,
+    /*!< 0122H: Storage Commitment has been requested for a SOP
+      Instance with a SOP Class that is not supported by the SCP */
 
-    /**
-     * 0119H: The SOP Class of an element in the Referenced SOP
-     * Instance Sequence did not correspond to the SOP class
-     * registered for this SOP Instance at the SCP
-     **/
     OrthancPluginStorageCommitmentFailureReason_ClassInstanceConflict = 5,
+    /*!< 0119H: The SOP Class of an element in the Referenced SOP
+      Instance Sequence did not correspond to the SOP class registered
+      for this SOP Instance at the SCP */
 
-    /**
-     * 0131H: The Transaction UID of the Storage Commitment Request is
-     * already in use
-     **/
     OrthancPluginStorageCommitmentFailureReason_DuplicateTransactionUID = 6
+    /*!< 0131H: The Transaction UID of the Storage Commitment Request
+      is already in use */
   } OrthancPluginStorageCommitmentFailureReason;
 
 
@@ -1843,16 +1829,15 @@ extern "C"
    * @see OrthancPluginCheckVersion
    * @ingroup Callbacks
    **/
-  ORTHANC_PLUGIN_INLINE int32_t  OrthancPluginCheckVersionAdvanced(
+  ORTHANC_PLUGIN_INLINE int  OrthancPluginCheckVersionAdvanced(
     OrthancPluginContext* context,
-    int32_t expectedMajor,
-    int32_t expectedMinor,
-    int32_t expectedRevision)
+    int expectedMajor,
+    int expectedMinor,
+    int expectedRevision)
   {
-    int32_t major, minor, revision;
+    int major, minor, revision;
 
-    if (sizeof(int) != sizeof(int32_t) || /* Ensure binary compatibility with Orthanc SDK <= 1.12.1 */
-        sizeof(int32_t) != sizeof(OrthancPluginErrorCode) ||
+    if (sizeof(int32_t) != sizeof(OrthancPluginErrorCode) ||
         sizeof(int32_t) != sizeof(OrthancPluginHttpMethod) ||
         sizeof(int32_t) != sizeof(_OrthancPluginService) ||
         sizeof(int32_t) != sizeof(_OrthancPluginProperty) ||
@@ -1950,7 +1935,7 @@ extern "C"
    * @see OrthancPluginCheckVersionAdvanced
    * @ingroup Callbacks
    **/
-  ORTHANC_PLUGIN_INLINE int32_t  OrthancPluginCheckVersion(
+  ORTHANC_PLUGIN_INLINE int  OrthancPluginCheckVersion(
     OrthancPluginContext* context)
   {
     return OrthancPluginCheckVersionAdvanced(
@@ -3092,7 +3077,7 @@ extern "C"
    * @return 1 if the metadata is present, 0 if it is absent, -1 in case of error.
    * @ingroup DicomInstance
    **/
-  ORTHANC_PLUGIN_INLINE int32_t  OrthancPluginHasInstanceMetadata(
+  ORTHANC_PLUGIN_INLINE int  OrthancPluginHasInstanceMetadata(
     OrthancPluginContext*              context,
     const OrthancPluginDicomInstance*  instance,
     const char*                        metadata)
@@ -3871,13 +3856,13 @@ extern "C"
     OrthancPluginContext*    context,
     OrthancPluginRestOutput* output,
     uint16_t                 status,
-    const void*              body,
+    const char*              body,
     uint32_t                 bodySize)
   {
     _OrthancPluginSendHttpStatus params;
     params.output = output;
     params.status = status;
-    params.body = (const char*) body;
+    params.body = body;
     params.bodySize = bodySize;
     context->InvokeService(context, _OrthancPluginService_SendHttpStatus, &params);
   }
@@ -6775,7 +6760,7 @@ extern "C"
   {
     char**             resultId;
     OrthancPluginJob  *job;
-    int32_t            priority;
+    int                priority;
   } _OrthancPluginSubmitJob;
 
   /**
@@ -6794,7 +6779,7 @@ extern "C"
   ORTHANC_PLUGIN_INLINE char *OrthancPluginSubmitJob(
     OrthancPluginContext   *context,
     OrthancPluginJob       *job,
-    int32_t                 priority)
+    int                     priority)
   {
     char* resultId = NULL;
 

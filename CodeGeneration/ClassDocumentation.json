@@ -6,6 +6,7 @@
   "OrthancPluginFindQuery" : "DICOM C-FIND query",
   "OrthancPluginImage" : "2D image managed by the Orthanc core",
   "OrthancPluginJob" : "Orthanc job",
+  "OrthancPluginKeysValuesIterator" : "Iterator over the keys and values of a key-value store",
   "OrthancPluginPeers" : "Orthanc peer",
   "OrthancPluginRestOutput" : "Output for a call to the REST API of Orthanc",
   "OrthancPluginServerChunkedRequestReader" : "Read for a chunked HTTP request",
