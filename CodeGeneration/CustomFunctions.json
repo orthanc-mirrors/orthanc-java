@@ -1,6 +1,7 @@
 [
   {
     "c_function" : "OrthancPluginCustom_GetQueueSize",
+    "sdk_functions" : [ "OrthancPluginGetQueueSize" ],
     "documentation" : {
       "description" : [ "Get the number of elements in a queue." ],
       "args" : {

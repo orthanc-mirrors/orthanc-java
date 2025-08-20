@@ -73,6 +73,34 @@ model = CodeModel.Load(args.model,
                        customFunctionsPath = args.custom_functions,
                        customMethodsPath = args.custom_methods)
 
+
+def RemoveKey(dic, key):
+    if key in dic:
+        dic.remove(key)
+
+unwrappedFunctions = model.get('unwrapped_functions')
+
+# List of the functions that are manually implemented in the C++ code
+# (check out "env.RegisterNatives()" in "Plugin.cpp")
+for sdk in [
+        'OrthancPluginRegisterRestCallback',
+        'OrthancPluginRegisterRestCallbackNoLock',
+        'OrthancPluginRegisterOnChangeCallback',
+]:
+    RemoveKey(unwrappedFunctions, sdk)
+
+
+for f in model['native_functions']:
+    if f['is_custom']:
+        for sdk in f['sdk_functions']:
+            RemoveKey(unwrappedFunctions, sdk)
+
+print('\nFunctions in the latest Orthanc SDK that are not wrapped yet:')
+for f in unwrappedFunctions:
+    print('- %s()' % f)
+print('')
+
+
 with open(os.path.join(ROOT, 'CppNativeSDK.mustache'), 'r') as f:
     template = f.read()
 

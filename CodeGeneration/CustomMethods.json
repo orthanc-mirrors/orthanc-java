@@ -3,6 +3,7 @@
     {
       "short_name" : "next",
       "c_function" : "OrthancPluginCustom_KeysValuesIteratorNext",
+      "sdk_functions" : [ "OrthancPluginKeysValuesIteratorNext" ],
       "documentation" : {
         "description" : [ "Advance to the next element in the iterator." ],
         "return" : "Whether the iterator is done."

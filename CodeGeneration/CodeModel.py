@@ -420,6 +420,7 @@ def WrapFunction(cls, f, is_custom = False):
         'since_sdk' : since_sdk,
         'is_custom' : is_custom,
         'return_sdk_type' : f['return_sdk_type'],
+        'sdk_functions' : f.get('sdk_functions', []),
     }
 
     if 'documentation' in f:
