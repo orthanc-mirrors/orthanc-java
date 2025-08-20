@@ -213,6 +213,14 @@ def ConvertReturnType(f):
             'java_signature' : 'Z',
             'java_type' : 'boolean',
             }
+    elif f['return_sdk_type'] == "java_object":
+        result = {
+            'c_type' : 'jobject',
+            'default_value' : 'NULL',
+            'is_java_object' : True,
+            'java_type' : f['return_sdk_class'],
+            'java_signature' : f['return_sdk_signature'],
+        }
     else:
         raise Exception('Unsupported return type: %s' % json.dumps(f, indent=4))
 
@@ -430,7 +438,8 @@ def WrapFunction(cls, f, is_custom = False):
     if (returnType.get('is_basic_type') == True or
         returnType.get('is_bytes') == True or
         returnType.get('is_dynamic_string') == True or
-        returnType.get('is_static_string') == True):
+        returnType.get('is_static_string') == True or
+        returnType.get('is_java_object') == True):
         result['java_return_start'] = 'return '
 
     elif returnType.get('is_enumeration') == True:

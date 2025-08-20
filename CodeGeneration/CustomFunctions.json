@@ -17,5 +17,32 @@
     ],
     "return_sdk_type" : "uint64_t",
     "since_sdk" : [ 1, 12, 8 ]
+  },
+
+  {
+    "c_function" : "OrthancPluginCustom_GetKeyValue",
+    "sdk_functions" : [ "OrthancPluginGetKeyValue" ],
+    "documentation" : {
+      "description" : [ "Get the value associated with a key in the Orthanc key-value store." ],
+      "args" : {
+        "storeId" : "The key-value store.",
+        "key" : "The key."
+      },
+      "return" : "The value as a byte array, or null."
+    },
+    "args" : [
+      {
+        "sdk_name" : "storeId",
+        "sdk_type" : "const char *"
+      },
+      {
+        "sdk_name" : "key",
+        "sdk_type" : "const char *"
+      }
+    ],
+    "return_sdk_type" : "java_object",
+    "return_sdk_class" : "byte[]",
+    "return_sdk_signature" : "[B",
+    "since_sdk" : [ 1, 12, 8 ]
   }
 ]

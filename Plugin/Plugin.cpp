@@ -436,7 +436,8 @@ static void SetPluginDescription(const std::string& description)
 
 
 #if ORTHANC_PLUGINS_VERSION_IS_ABOVE(1, 12, 8)
-uint64_t OrthancPluginCustom_GetQueueSize(OrthancPluginContext* context, const char *queueId)
+uint64_t OrthancPluginCustom_GetQueueSize(OrthancPluginContext* context,
+                                          const char *queueId)
 {
   uint64_t size = 0;
   OrthancPluginErrorCode code = OrthancPluginGetQueueSize(context, queueId, &size);
@@ -454,7 +455,39 @@ uint64_t OrthancPluginCustom_GetQueueSize(OrthancPluginContext* context, const c
 
 
 #if ORTHANC_PLUGINS_VERSION_IS_ABOVE(1, 12, 8)
-bool OrthancPluginCustom_KeysValuesIteratorNext(OrthancPluginContext* context, OrthancPluginKeysValuesIterator* self)
+jobject OrthancPluginCustom_GetKeyValue(JNIEnv* env,
+                                        OrthancPluginContext* context,
+                                        const char * storeId,
+                                        const char * key)
+{
+  OrthancBytes value;
+  uint8_t found = false;
+  OrthancPluginErrorCode code = OrthancPluginGetKeyValue(context, &found, value.GetMemoryBuffer(), storeId, key);
+
+  if (code == OrthancPluginErrorCode_Success)
+  {
+    if (found)
+    {
+      JavaEnvironment java(env);
+      return java.ConstructByteArray(value.GetSize(), value.GetData());
+    }
+    else
+    {
+      // The C "NULL" value results in the Java "null" value
+      return NULL;
+    }
+  }
+  else
+  {
+    throw std::runtime_error(JavaEnvironment::GetRuntimeErrorMessage(context, code));
+  }
+}
+#endif
+
+
+#if ORTHANC_PLUGINS_VERSION_IS_ABOVE(1, 12, 8)
+bool OrthancPluginCustom_KeysValuesIteratorNext(OrthancPluginContext* context,
+                                                OrthancPluginKeysValuesIterator* self)
 {
   uint8_t done = true;
   OrthancPluginErrorCode code = OrthancPluginKeysValuesIteratorNext(context, &done, self);

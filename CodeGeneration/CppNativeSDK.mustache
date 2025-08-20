@@ -41,6 +41,12 @@ extern OrthancPluginContext* context_;
 {{#return.is_basic_type}}
 extern {{return_sdk_type}} {{c_function}}(OrthancPluginContext* context{{#class_name}}, {{class_name}}* self{{/class_name}}{{#args}}, {{sdk_type}} {{name}}{{/args}});
 {{/return.is_basic_type}}
+{{#return.is_bytes}}
+extern OrthancPluginErrorCode {{c_function}}(OrthancPluginContext* context, OrthancPluginMemoryBuffer* target{{#class_name}}, {{class_name}}* self{{/class_name}}{{#args}}, {{sdk_type}} {{name}}{{/args}});
+{{/return.is_bytes}}
+{{#return.is_java_object}}
+extern jobject {{c_function}}(JNIEnv* env, OrthancPluginContext* context{{#class_name}}, {{class_name}}* self{{/class_name}}{{#args}}, {{sdk_type}} {{name}}{{/args}});
+{{/return.is_java_object}}
 {{/is_custom}}
 {{/functions}}
 
@@ -166,6 +172,12 @@ JNIEXPORT {{return.c_type}} JNI_{{c_function}}(JNIEnv* env, jobject sdkObject{{#
       {{#class_name}}, reinterpret_cast<{{class_name}}*>(static_cast<intptr_t>(self)){{/class_name}}
       {{#args}}, {{c_accessor}}{{/args}});
 {{/return.is_enumeration}}
+
+{{#return.is_java_object}}
+    return {{c_function}}(env, context_
+      {{#class_name}}, reinterpret_cast<{{class_name}}*>(static_cast<intptr_t>(self)){{/class_name}}
+      {{#args}}, {{c_accessor}}{{/args}});
+{{/return.is_java_object}}
   }
   catch (std::runtime_error& e)
   {
