@@ -87,4 +87,7 @@ public:
 
   jobject ConstructEnumValue(const std::string& fqn,
                              int value);
+
+  static std::string GetRuntimeErrorMessage(OrthancPluginContext* context,
+                                            OrthancPluginErrorCode code);
 };

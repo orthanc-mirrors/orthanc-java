@@ -37,6 +37,14 @@
 extern OrthancPluginContext* context_;
 
 {{#functions}}
+{{#is_custom}}
+{{#return.is_basic_type}}
+extern {{return_sdk_type}} {{c_function}}(OrthancPluginContext* context{{#class_name}}, {{class_name}}* self{{/class_name}}{{#args}}, {{sdk_type}} {{name}}{{/args}});
+{{/return.is_basic_type}}
+{{/is_custom}}
+{{/functions}}
+
+{{#functions}}
 
 JNIEXPORT {{return.c_type}} JNI_{{c_function}}(JNIEnv* env, jobject sdkObject{{#class_name}}, jlong self{{/class_name}}{{#args}}, {{c_type}} {{name}}{{/args}})
 {
@@ -67,11 +75,11 @@ JNIEXPORT {{return.c_type}} JNI_{{c_function}}(JNIEnv* env, jobject sdkObject{{#
     }
 {{/return.is_exception}}
   
-{{#return.is_number}}
+{{#return.is_basic_type}}
     return {{c_function}}(context_
       {{#class_name}}, reinterpret_cast<{{class_name}}*>(static_cast<intptr_t>(self)){{/class_name}}
       {{#args}}, {{c_accessor}}{{/args}});
-{{/return.is_number}}
+{{/return.is_basic_type}}
   
 {{#return.is_static_string}}
     const char* s = {{c_function}}(context_

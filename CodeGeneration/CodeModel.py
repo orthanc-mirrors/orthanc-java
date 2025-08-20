@@ -97,15 +97,35 @@ def ToUpperCase(name):
     return s
 
 
+def RemovePrefix(prefix, s, isCamelCase):
+    assert(s.startswith(prefix))
+    t = s[len(prefix):]
+    if isCamelCase:
+        return t[0].lower() + t[1:]
+    else:
+        return t
+
+
 def RemoveOrthancPluginPrefix(s, isCamelCase):
+    CUSTOM_PREFIX = 'OrthancPluginCustom_'
+    if s.startswith(CUSTOM_PREFIX):
+        return RemovePrefix(CUSTOM_PREFIX, s, isCamelCase)
+
     PREFIX = 'OrthancPlugin'
     if s.startswith(PREFIX):
-        t = s[len(PREFIX):]
-        if isCamelCase:
-            t = t[0].lower() + t[1:]
-        return t
+        return RemovePrefix(PREFIX, s, isCamelCase)
+
+    raise Exception('Incorrect prefix: %s' % s)
+
+
+def GetJavaMethodName(className, f):
+    if 'short_name' in f:
+        return f['short_name']
+    elif (className != None and
+          f['c_function'].startswith(className)):
+        return RemovePrefix(className, f['c_function'], True)
     else:
-        raise Exception('Incorrect prefix: %s' % s)
+        return RemoveOrthancPluginPrefix(f['c_function'], True)
 
 
 def ConvertReturnType(f):
@@ -122,15 +142,15 @@ def ConvertReturnType(f):
         result = {
             'c_type' : 'jint',
             'default_value' : '0',
-            'is_number' : True,
+            'is_basic_type' : True,
             'java_signature' : 'I',
             'java_type' : 'int',
             }
-    elif f['return_sdk_type'] in [ 'int64_t' ]:
+    elif f['return_sdk_type'] in [ 'int64_t', 'uint64_t' ]:
         result = {
             'c_type' : 'jlong',
             'default_value' : '0',
-            'is_number' : True,
+            'is_basic_type' : True,
             'java_signature' : 'J',
             'java_type' : 'long',
             }
@@ -185,6 +205,14 @@ def ConvertReturnType(f):
             'java_signature' : 'Ljava/lang/String;',
             'java_type' : 'String',
             }
+    elif f['return_sdk_type'] == 'bool':
+        result = {
+            'c_type' : 'jboolean',
+            'default_value' : 'false',
+            'is_basic_type' : True,
+            'java_signature' : 'Z',
+            'java_type' : 'boolean',
+            }
     else:
         raise Exception('Unsupported return type: %s' % json.dumps(f, indent=4))
 
@@ -195,6 +223,11 @@ def ConvertReturnType(f):
 
 def ConvertArgument(arg):
     result = None
+
+    if 'name' in arg:
+        name = arg['name']
+    else:
+        name = arg['sdk_name']
 
     if arg['sdk_type'] in [ 'int', 'int32_t', 'uint32_t' ]:
         result = {
@@ -228,7 +261,7 @@ def ConvertArgument(arg):
         }
     elif arg['sdk_type'] == 'const char *':
         result = {
-            'c_accessor' : 'c_%s.GetValue()' % arg['name'],
+            'c_accessor' : 'c_%s.GetValue()' % name,
             'c_type' : 'jstring',
             'convert_string' : True,
             'java_signature' : 'Ljava/lang/String;',
@@ -240,7 +273,7 @@ def ConvertArgument(arg):
         #   - argument "body" of "OrthancPluginSendHttpStatus()" in 1.11.1
 
         result = {
-            'c_accessor' : 'reinterpret_cast<const char*>(c_%s.GetData()), c_%s.GetSize()' % (arg['name'], arg['name']),
+            'c_accessor' : 'reinterpret_cast<const char*>(c_%s.GetData()), c_%s.GetSize()' % (name, name),
             'c_type' : 'jbyteArray',
             'convert_bytes' : True,
             'java_signature' : '[B',
@@ -248,7 +281,7 @@ def ConvertArgument(arg):
         }
     elif arg['sdk_type'] == 'enumeration':
         result = {
-            'c_accessor' : 'static_cast<%s>(%s)' % (arg['sdk_enumeration'], arg['name']),
+            'c_accessor' : 'static_cast<%s>(%s)' % (arg['sdk_enumeration'], name),
             'c_type' : 'jint',
             'java_wrapper_accessor' : '%s.getValue()' % arg['sdk_name'],
             'java_wrapper_type' : RemoveOrthancPluginPrefix(arg['sdk_enumeration'], False),
@@ -257,7 +290,7 @@ def ConvertArgument(arg):
             }
     elif arg['sdk_type'] == 'const void *':
         result = {
-            'c_accessor' : 'c_%s.GetData()' % arg['name'],
+            'c_accessor' : 'c_%s.GetData()' % name,
             'c_type' : 'jbyteArray',
             'convert_bytes' : True,
             'java_signature' : '[B',
@@ -265,7 +298,7 @@ def ConvertArgument(arg):
         }
     elif arg['sdk_type'] in [ 'object', 'const_object' ]:
         result = {
-            'c_accessor' : 'reinterpret_cast<%s*>(static_cast<intptr_t>(%s))' % (arg['sdk_class'], arg['name']),
+            'c_accessor' : 'reinterpret_cast<%s*>(static_cast<intptr_t>(%s))' % (arg['sdk_class'], name),
             'c_type' : 'jlong',
             'java_signature' : 'J',
             'java_type' : 'long',
@@ -275,8 +308,9 @@ def ConvertArgument(arg):
     else:
         raise Exception('Unsupported argument type: %s' % json.dumps(arg, indent=4))
 
-    result['name'] = arg['name']
+    result['name'] = name
     result['sdk_name'] = arg['sdk_name']
+    result['sdk_type'] = arg['sdk_type']
 
     if not 'java_wrapper_type' in result:
         result['java_wrapper_type'] = result['java_type']
@@ -285,7 +319,7 @@ def ConvertArgument(arg):
         result['java_wrapper_accessor'] = arg['sdk_name']
 
     if not 'c_accessor' in result:
-        result['c_accessor'] = arg['name']
+        result['c_accessor'] = name
 
     return result
 
@@ -352,7 +386,12 @@ def EncodeFunctionDocumentation(f):
     return list(map(lambda x: { 'line' : x }, lines))
 
 
-def WrapFunction(className, f):
+def WrapFunction(cls, f, is_custom = False):
+    if cls == None:
+        className = None
+    else:
+        className = cls['name']
+
     args = []
     for a in f['args']:
         args.append(ConvertArgument(a))
@@ -361,9 +400,14 @@ def WrapFunction(className, f):
         args[-1]['last'] = True
 
     returnType = ConvertReturnType(f)
-    signature = '(%s%s)%s' % ('J' if className != None else '',
+    signature = '(%s%s)%s' % ('J' if cls != None else '',
                               ''.join(map(lambda x: x['java_signature'], args)),
                               returnType['java_signature'])
+
+    since_sdk = f.get('since_sdk')
+    if (since_sdk == None and
+        cls != None):
+        since_sdk = cls.get('since_sdk')
 
     result = {
         'args' : args,
@@ -372,15 +416,17 @@ def WrapFunction(className, f):
         'has_args' : len(args) > 0,
         'java_signature' : signature,
         'return' : returnType,
-        'java_name' : RemoveOrthancPluginPrefix(f['c_function'], True),
-        'since_sdk' : f.get('since_sdk', None),
+        'java_name' : GetJavaMethodName(className, f),
+        'since_sdk' : since_sdk,
+        'is_custom' : is_custom,
+        'return_sdk_type' : f['return_sdk_type'],
     }
 
     if 'documentation' in f:
         result['has_documentation'] = True
         result['documentation'] = EncodeFunctionDocumentation(f)
 
-    if (returnType.get('is_number') == True or
+    if (returnType.get('is_basic_type') == True or
         returnType.get('is_bytes') == True or
         returnType.get('is_dynamic_string') == True or
         returnType.get('is_static_string') == True):
@@ -397,9 +443,21 @@ def WrapFunction(className, f):
     return result
 
 
-def Load(path):
+def Load(path, customFunctionsPath = None, customMethodsPath = None):
     with open(path, 'r') as f:
         model = json.loads(f.read())
+
+    if customMethodsPath == None:
+        customMethods = {}
+    else:
+        with open(customMethodsPath, 'r') as f:
+            customMethods = json.loads(f.read())
+
+    if customFunctionsPath == None:
+        customFunctions = {}
+    else:
+        with open(customFunctionsPath, 'r') as f:
+            customFunctions = json.loads(f.read())
 
     for enum in model['enumerations']:
         if not enum['name'].startswith('OrthancPlugin'):
@@ -425,11 +483,14 @@ def Load(path):
     for f in model['global_functions']:
         nativeFunctions.append(WrapFunction(None, f))
 
+    for f in customFunctions:
+        nativeFunctions.append(WrapFunction(None, f, is_custom = True))
+
     for c in model['classes']:
         c['short_name'] = RemoveOrthancPluginPrefix(c['name'], False)
 
         if 'destructor' in c:
-            nativeFunctions.append(WrapFunction(c['name'], {
+            nativeFunctions.append(WrapFunction(c, {
                 'args' : [],
                 'c_function' : c['destructor'],
                 'return_sdk_type' : 'void',
@@ -439,8 +500,12 @@ def Load(path):
         wrappedMethods = []
 
         for m in c['methods']:
-            nativeFunctions.append(WrapFunction(c['name'], m))
-            wrappedMethods.append(WrapFunction(c['short_name'], m))
+            nativeFunctions.append(WrapFunction(c, m))
+            wrappedMethods.append(WrapFunction(c, m))
+
+        for customMethod in customMethods.get(c['name'], []):
+            nativeFunctions.append(WrapFunction(c, customMethod, is_custom = True))
+            wrappedMethods.append(WrapFunction(c, customMethod, is_custom = True))
 
         c['wrapped_methods'] = wrappedMethods
 

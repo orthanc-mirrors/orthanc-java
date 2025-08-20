@@ -435,6 +435,42 @@ static void SetPluginDescription(const std::string& description)
 }
 
 
+#if ORTHANC_PLUGINS_VERSION_IS_ABOVE(1, 12, 8)
+uint64_t OrthancPluginCustom_GetQueueSize(OrthancPluginContext* context, const char *queueId)
+{
+  uint64_t size = 0;
+  OrthancPluginErrorCode code = OrthancPluginGetQueueSize(context, queueId, &size);
+
+  if (code == OrthancPluginErrorCode_Success)
+  {
+    return size;
+  }
+  else
+  {
+    throw std::runtime_error(JavaEnvironment::GetRuntimeErrorMessage(context, code));
+  }
+}
+#endif
+
+
+#if ORTHANC_PLUGINS_VERSION_IS_ABOVE(1, 12, 8)
+bool OrthancPluginCustom_KeysValuesIteratorNext(OrthancPluginContext* context, OrthancPluginKeysValuesIterator* self)
+{
+  uint8_t done = true;
+  OrthancPluginErrorCode code = OrthancPluginKeysValuesIteratorNext(context, &done, self);
+
+  if (code == OrthancPluginErrorCode_Success)
+  {
+    return done;
+  }
+  else
+  {
+    throw std::runtime_error(JavaEnvironment::GetRuntimeErrorMessage(context, code));
+  }
+}
+#endif
+
+
 extern "C"
 {
   ORTHANC_PLUGINS_API int32_t OrthancPluginInitialize(OrthancPluginContext* context)

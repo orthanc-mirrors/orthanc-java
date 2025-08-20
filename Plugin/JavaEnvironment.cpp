@@ -296,3 +296,10 @@ jobject JavaEnvironment::ConstructEnumValue(const std::string& fqn,
     throw std::runtime_error("Cannot create enumeration value: " + fqn + " " + buf);
   }
 }
+
+
+std::string JavaEnvironment::GetRuntimeErrorMessage(OrthancPluginContext* context,
+                                                    OrthancPluginErrorCode code)
+{
+  return "An exception has occurred in Java: " + std::string(OrthancPluginGetErrorDescription(context, code));
+}

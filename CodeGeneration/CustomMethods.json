@@ -1,0 +1,15 @@
+{
+  "OrthancPluginKeysValuesIterator" : [
+    {
+      "short_name" : "next",
+      "c_function" : "OrthancPluginCustom_KeysValuesIteratorNext",
+      "documentation" : {
+        "description" : [ "Advance to the next element in the iterator." ],
+        "return" : "Whether the iterator is done."
+      },
+      "args" : [
+      ],
+      "return_sdk_type" : "bool"
+    }
+  ]
+}

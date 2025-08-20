@@ -50,6 +50,12 @@ parser.add_argument('--model',
 parser.add_argument('--target',
                     default = '/tmp/OrthancJavaSDK',
                     help = 'Target folder')
+parser.add_argument('--custom-functions',
+                    default = os.path.join(os.path.dirname(os.path.realpath(sys.argv[0])), 'CustomFunctions.json'),
+                    help = 'Input list of custom global functions')
+parser.add_argument('--custom-methods',
+                    default = os.path.join(os.path.dirname(os.path.realpath(sys.argv[0])), 'CustomMethods.json'),
+                    help = 'Input list of custom methods')
 
 args = parser.parse_args()
 
@@ -68,7 +74,9 @@ renderer = pystache.Renderer(
     escape = lambda u: u,  # No escaping
 )
 
-model = CodeModel.Load(args.model)
+model = CodeModel.Load(args.model,
+                       customFunctionsPath = args.custom_functions,
+                       customMethodsPath = args.custom_methods)
 
 
 print('** Generating the Java classes to wrap Orthanc SDK %d.%d.%d **' % (SDK_VERSION[0], SDK_VERSION[1], SDK_VERSION[2]))

@@ -1,0 +1,20 @@
+[
+  {
+    "c_function" : "OrthancPluginCustom_GetQueueSize",
+    "documentation" : {
+      "description" : [ "Get the number of elements in a queue." ],
+      "args" : {
+        "queueId" : "The identifier of the queue."
+      },
+      "return" : "The value, or None."
+    },
+    "args" : [
+      {
+        "sdk_name" : "queueId",
+        "sdk_type" : "const char *"
+      }
+    ],
+    "return_sdk_type" : "uint64_t",
+    "since_sdk" : [ 1, 12, 8 ]
+  }
+]
