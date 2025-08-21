@@ -1,5 +1,6 @@
 [
   {
+    "comment" : "New in release 2.0",
     "c_function" : "OrthancPluginCustom_GetQueueSize",
     "sdk_functions" : [ "OrthancPluginGetQueueSize" ],
     "documentation" : {
@@ -7,7 +8,7 @@
       "args" : {
         "queueId" : "The identifier of the queue."
       },
-      "return" : "The value, or None."
+      "return" : "The size of the queue."
     },
     "args" : [
       {
@@ -20,6 +21,36 @@
   },
 
   {
+    "comment" : "New in release 2.0",
+    "c_function" : "OrthancPluginCustom_DequeueValue",
+    "sdk_functions" : [ "OrthancPluginDequeueValue" ],
+    "documentation" : {
+      "description" : [ "Dequeue a value from a queue." ],
+      "args" : {
+        "queueId" : "The identifier of the queue.",
+        "origin" : "The position from where the value is dequeued (back for LIFO, front for FIFO)."
+      },
+      "return" : "The dequeued value as a byte array, or null if the queue was empty."
+    },
+    "args" : [
+      {
+        "sdk_name" : "queueId",
+        "sdk_type" : "const char *"
+      },
+      {
+        "sdk_name" : "origin",
+        "sdk_type" : "enumeration",
+        "sdk_enumeration" : "OrthancPluginQueueOrigin"
+      }
+    ],
+    "return_sdk_type" : "java_object",
+    "return_sdk_class" : "byte[]",
+    "return_sdk_signature" : "[B",
+    "since_sdk" : [ 1, 12, 8 ]
+  },
+
+  {
+    "comment" : "New in release 2.0",
     "c_function" : "OrthancPluginCustom_GetKeyValue",
     "sdk_functions" : [ "OrthancPluginGetKeyValue" ],
     "documentation" : {
@@ -28,7 +59,7 @@
         "storeId" : "The key-value store.",
         "key" : "The key."
       },
-      "return" : "The value as a byte array, or null."
+      "return" : "The value as a byte array, or null if the key does not exist."
     },
     "args" : [
       {

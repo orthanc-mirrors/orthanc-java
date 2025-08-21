@@ -455,6 +455,37 @@ uint64_t OrthancPluginCustom_GetQueueSize(OrthancPluginContext* context,
 
 
 #if ORTHANC_PLUGINS_VERSION_IS_ABOVE(1, 12, 8)
+jobject OrthancPluginCustom_DequeueValue(JNIEnv* env,
+                                         OrthancPluginContext* context,
+                                         char const* queueId,
+                                         OrthancPluginQueueOrigin origin)
+{
+  OrthancBytes value;
+  uint8_t found = false;
+  OrthancPluginErrorCode code = OrthancPluginDequeueValue(context, &found, value.GetMemoryBuffer(), queueId, origin);
+
+  if (code == OrthancPluginErrorCode_Success)
+  {
+    if (found)
+    {
+      JavaEnvironment java(env);
+      return java.ConstructByteArray(value.GetSize(), value.GetData());
+    }
+    else
+    {
+      // The C "NULL" value results in the Java "null" value
+      return NULL;
+    }
+  }
+  else
+  {
+    throw std::runtime_error(JavaEnvironment::GetRuntimeErrorMessage(context, code));
+  }
+}
+#endif
+
+
+#if ORTHANC_PLUGINS_VERSION_IS_ABOVE(1, 12, 8)
 jobject OrthancPluginCustom_GetKeyValue(JNIEnv* env,
                                         OrthancPluginContext* context,
                                         const char * storeId,

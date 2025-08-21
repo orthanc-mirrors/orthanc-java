@@ -1,6 +1,7 @@
 {
   "OrthancPluginKeysValuesIterator" : [
     {
+      "comment" : "New in release 2.0",
       "short_name" : "next",
       "c_function" : "OrthancPluginCustom_KeysValuesIteratorNext",
       "sdk_functions" : [ "OrthancPluginKeysValuesIteratorNext" ],

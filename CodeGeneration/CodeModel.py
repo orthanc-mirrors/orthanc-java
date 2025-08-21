@@ -237,37 +237,39 @@ def ConvertArgument(arg):
     else:
         name = arg['sdk_name']
 
-    if arg['sdk_type'] in [ 'int', 'int32_t', 'uint32_t' ]:
+    sdk_type = arg['sdk_type']
+
+    if sdk_type in [ 'int', 'int32_t', 'uint32_t' ]:
         result = {
             'c_type' : 'jint',
             'java_signature' : 'I',
             'java_type' : 'int',
         }
-    elif arg['sdk_type'] == 'uint8_t':
+    elif sdk_type == 'uint8_t':
         result = {
             'c_type' : 'jbyte',
             'java_signature' : 'B',
             'java_type' : 'byte',
         }
-    elif arg['sdk_type'] == 'uint16_t':
+    elif sdk_type == 'uint16_t':
         result = {
             'c_type' : 'jshort',
             'java_signature' : 'S',
             'java_type' : 'short',
         }
-    elif arg['sdk_type'] in [ 'int64_t', 'uint64_t' ]:
+    elif sdk_type in [ 'int64_t', 'uint64_t' ]:
         result = {
             'c_type' : 'jlong',
             'java_signature' : 'J',
             'java_type' : 'long',
         }
-    elif arg['sdk_type'] == 'float':
+    elif sdk_type == 'float':
         result = {
             'c_type' : 'jfloat',
             'java_signature' : 'F',
             'java_type' : 'float',
         }
-    elif arg['sdk_type'] == 'const char *':
+    elif sdk_type == 'const char *':
         result = {
             'c_accessor' : 'c_%s.GetValue()' % name,
             'c_type' : 'jstring',
@@ -275,7 +277,7 @@ def ConvertArgument(arg):
             'java_signature' : 'Ljava/lang/String;',
             'java_type' : 'String',
         }
-    elif arg['sdk_type'] == 'const_void_pointer_with_size':
+    elif sdk_type == 'const_void_pointer_with_size':
         # NB: The cast to "const char*" allows compatibility with functions whose
         # signatures were incorrect at the time they were introduced, notably:
         #   - argument "body" of "OrthancPluginSendHttpStatus()" in 1.11.1
@@ -287,7 +289,7 @@ def ConvertArgument(arg):
             'java_signature' : '[B',
             'java_type' : 'byte[]',
         }
-    elif arg['sdk_type'] == 'enumeration':
+    elif sdk_type == 'enumeration':
         result = {
             'c_accessor' : 'static_cast<%s>(%s)' % (arg['sdk_enumeration'], name),
             'c_type' : 'jint',
@@ -296,7 +298,8 @@ def ConvertArgument(arg):
             'java_signature' : 'I',
             'java_type' : 'int',
             }
-    elif arg['sdk_type'] == 'const void *':
+        sdk_type = arg['sdk_enumeration']
+    elif sdk_type == 'const void *':
         result = {
             'c_accessor' : 'c_%s.GetData()' % name,
             'c_type' : 'jbyteArray',
@@ -304,7 +307,7 @@ def ConvertArgument(arg):
             'java_signature' : '[B',
             'java_type' : 'byte[]',
         }
-    elif arg['sdk_type'] in [ 'object', 'const_object' ]:
+    elif sdk_type in [ 'object', 'const_object' ]:
         result = {
             'c_accessor' : 'reinterpret_cast<%s*>(static_cast<intptr_t>(%s))' % (arg['sdk_class'], name),
             'c_type' : 'jlong',
@@ -318,7 +321,7 @@ def ConvertArgument(arg):
 
     result['name'] = name
     result['sdk_name'] = arg['sdk_name']
-    result['sdk_type'] = arg['sdk_type']
+    result['sdk_type'] = sdk_type
 
     if not 'java_wrapper_type' in result:
         result['java_wrapper_type'] = result['java_type']
