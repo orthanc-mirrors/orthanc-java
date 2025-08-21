@@ -75,5 +75,33 @@
     "return_sdk_class" : "byte[]",
     "return_sdk_signature" : "[B",
     "since_sdk" : [ 1, 12, 8 ]
+  },
+
+  {
+    "comment" : "New in release 2.0",
+    "c_function" : "OrthancPluginCustom_SetStableStatus",
+    "sdk_functions" : [ "OrthancPluginSetStableStatus" ],
+    "documentation" : {
+      "description" : [ "Change the Stable status of a resource" ],
+      "args" : {
+        "resourceId" : "The identifier of the resource.",
+        "stableStatus" : "The new stable status."
+      },
+      "return" : "A Boolean indicating whether the status has changed (true) or not (false) during the execution of this command."
+    },
+    "args" : [
+      {
+        "sdk_name" : "resourceId",
+        "sdk_type" : "const char *"
+      },
+      {
+        "sdk_name" : "stableStatus",
+        "sdk_type" : "enumeration",
+        "sdk_enumeration" : "OrthancPluginStableStatus"
+      }
+    ],
+    "return_sdk_type" : "bool",
+    "since_sdk" : [ 1, 12, 9 ]
   }
+
 ]

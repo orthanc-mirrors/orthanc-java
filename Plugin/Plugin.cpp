@@ -535,6 +535,26 @@ bool OrthancPluginCustom_KeysValuesIteratorNext(OrthancPluginContext* context,
 #endif
 
 
+#if ORTHANC_PLUGINS_VERSION_IS_ABOVE(1, 12, 9)
+bool OrthancPluginCustom_SetStableStatus(OrthancPluginContext* context,
+                                         const char* resourceId,
+                                         OrthancPluginStableStatus stableStatus)
+{
+  uint8_t statusHasChanged = false;
+  OrthancPluginErrorCode code = OrthancPluginSetStableStatus(context, &statusHasChanged, resourceId, stableStatus);
+
+  if (code == OrthancPluginErrorCode_Success)
+  {
+    return statusHasChanged;
+  }
+  else
+  {
+    throw std::runtime_error(JavaEnvironment::GetRuntimeErrorMessage(context, code));
+  }
+}
+#endif
+
+
 extern "C"
 {
   ORTHANC_PLUGINS_API int32_t OrthancPluginInitialize(OrthancPluginContext* context)
