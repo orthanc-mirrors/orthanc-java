@@ -8,11 +8,20 @@ using Java 1.8, this Java plugin requires Java 11.
 # cd ../../Plugin/
 # mkdir Build
 # cd Build
-# cmake .. -DCMAKE_BUILD_TYPE=Release
+# cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_SYSTEM_ORTHANC_SDK=OFF
 # make -j4
 
 
-(2) Compile the Java plugin using Maven:
+(2) Make sure to build the Java wrapper:
+
+# cd ../../JavaSDK/
+# mkdir Build
+# cd Build
+# cmake .. -DUSE_SYSTEM_ORTHANC_SDK=OFF -DCMAKE_INSTALL_PREFIX=..
+# make -j4 install
+
+
+(3) Compile the Java plugin using Maven:
 
 # cd ../../Samples/MammographyDeepLearning
 # mvn compile package
@@ -23,17 +32,17 @@ make sure to uncomment the suitable classifier section in "pom.xml"
 (i.e., "win-x86_64", "osx-x86_64", or "osx-aarch64").
 
 
-(3) Start Orthanc:
+(4) Start Orthanc:
 
 On Ubuntu 20.04 or 22.04 (replace "mainline" with the version of the
-Java plugin for Orthanc):
+Java plugin for Orthanc, cf. "../global.properties"):
 
 # LD_LIBRARY_PATH=/usr/lib/jvm/java-11-openjdk-amd64/lib/server/ \
   ORTHANC_JAVA_VERSION=mainline \
   Orthanc ./configuration.json
 
 IMPORTANT: The DICOMweb plugin must be installed in the current
-directory.
+directory to run the Stone Web viewer.
 
 
-(4) Open the Orthanc Explorer interface at: http://localhost:8042/
+(5) Open the Orthanc Explorer interface at: http://localhost:8042/

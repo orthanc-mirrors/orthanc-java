@@ -10,7 +10,7 @@
   ],
   "Java" : {
     "Enabled" : true,
-    "Classpath" : "target/OrthancFHIR-${ORTHANC_JAVA_VERSION}-jar-with-dependencies.jar",
+    "Classpath" : "target/OrthancFHIR-${ORTHANC_JAVA_VERSION}-jar-with-dependencies.jar:../../JavaSDK/OrthancJavaSDK.jar",
     "InitializationClass" : "Main"
   }
 }

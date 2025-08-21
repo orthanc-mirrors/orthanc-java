@@ -7,7 +7,7 @@
   "Plugins" : [ "../../Plugin/Build" ],
   "Java" : {
     "Enabled" : true,
-    "Classpath" : "target/OrthancDcm4Che-${ORTHANC_JAVA_VERSION}-jar-with-dependencies.jar",
+    "Classpath" : "target/OrthancDcm4Che-${ORTHANC_JAVA_VERSION}-jar-with-dependencies.jar:../../JavaSDK/OrthancJavaSDK.jar",
     "InitializationClass" : "Main"
   }
 }

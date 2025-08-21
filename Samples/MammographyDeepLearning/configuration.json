@@ -10,7 +10,7 @@
   ],
   "Java" : {
     "Enabled" : true,
-    "Classpath" : "target/OrthancMammographyDeepLearning-${ORTHANC_JAVA_VERSION}.jar",
+    "Classpath" : "target/OrthancMammographyDeepLearning-${ORTHANC_JAVA_VERSION}.jar:../../JavaSDK/OrthancJavaSDK.jar",
     "InitializationClass" : "Main"
   }
 }
