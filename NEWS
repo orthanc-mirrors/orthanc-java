@@ -1,6 +1,10 @@
 Pending changes in the mainline
 ===============================
 
+
+Version 2.0 (2025-08-22)
+========================
+
 => Maximum SDK version: 1.12.9 (default) <=
 => Minimum SDK version: 1.7.2 <=
 
@@ -8,6 +12,7 @@ Pending changes in the mainline
   to exploit the ORTHANC_PLUGIN_SINCE_SDK macro. This provides backward
   compatibility with the SDK that is actually installed on the system
 * The plugin now uses the code model that is part of the core "orthanc" project
+* Added support for queues and key-value stores
 
 
 Version 1.0 (2024-06-14)

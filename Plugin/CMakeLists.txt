@@ -21,7 +21,7 @@
 cmake_minimum_required(VERSION 3.1...4.0)
 project(OrthancJavaPlugin)
 
-set(PLUGIN_VERSION "mainline")
+set(PLUGIN_VERSION "2.0")
 
 set(CMAKE_CXX_STANDARD 11)
 
