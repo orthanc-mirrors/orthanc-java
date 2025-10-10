@@ -3,13 +3,13 @@
 
 cff-version: "1.1.0"
 message: "If you use this software, please cite it using these metadata."
-title: "Setting a PACS on FHIR"
+title: "Combining Languages to Set a PACS on FHIR"
 authors:
   -
     affiliation: UCLouvain
     family-names: Jodogne
     given-names: "Sébastien"
-doi: "10.5220/0012384600003657"
+doi: "10.1007/978-3-031-96899-0_18"
 license: "GPL-3.0-or-later"
 repository-code: "https://orthanc.uclouvain.be/hg/orthanc-java/"
 version: "2.0"
