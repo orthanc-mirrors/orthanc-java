@@ -23,10 +23,10 @@
 ## General information
 #####################################################################
 
-set(ORTHANC_SDK_DEFAULT_VERSION "1.12.9")
+set(ORTHANC_SDK_DEFAULT_VERSION "1.12.10")
 
 # This list must correspond to the content of "./Resources/SyncOrthancFolder.py"
-set(ORTHANC_SDK_AVAILABLE_VERSIONS "1.10.0" "1.12.6" "1.12.9")
+set(ORTHANC_SDK_AVAILABLE_VERSIONS "1.10.0" "1.12.6" "1.12.9" "1.12.10")
 
 
 #####################################################################
