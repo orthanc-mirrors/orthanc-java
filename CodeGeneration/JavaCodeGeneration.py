@@ -147,10 +147,7 @@ for cls in model['classes']:
 
             with open(os.path.join(TARGET, '%s.java' % cls['short_name']), 'w') as g:
                 if not cls['name'] in classDocumentation:
-                    print('WARNING: No global documentation for class: %s' % cls['name'])
-                    documentation = ''
-                else:
-                    documentation = classDocumentation[cls['name']]
+                    raise Exception('No global documentation for class: %s' % cls['name'])
 
                 methods = []
                 for method in cls['wrapped_methods']:
@@ -163,5 +160,5 @@ for cls in model['classes']:
                     'methods' : methods,
                     'constructors' : constructors,
                     'has_documentation' : True,
-                    'documentation' : documentation
+                    'documentation' : classDocumentation[cls['name']],
                 }))

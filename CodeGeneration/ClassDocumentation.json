@@ -1,4 +1,5 @@
 {
+  "OrthancPluginDicomConnection" : "The parameters of a DICOM connection",
   "OrthancPluginDicomInstance" : "DICOM instance managed by the Orthanc core",
   "OrthancPluginDicomWebNode" : "Node visited by DICOMweb conversion",
   "OrthancPluginFindAnswers" : "Answers to a DICOM C-FIND query",
